@@ -1,14 +1,19 @@
+import React from "react";
+import Header from "./components/Header/Header";
+import Footer from "./components/Footer/Footer";
+import MenuPage from "./components/MenuPage/MenuPage";
 import "./App.css";
-import List from "./components/ListContainer/List";
 
-function App() {
-  const list = ["list 1", "list 2", "list 3", "list 4", "list 5"];
-
-  return (
-    <div>
-      <List items={list} />
-    </div>
-  );
-}
+const App = () => {
+    return (
+        <div className="app-container">
+            <Header />
+            <main className="content">
+                <MenuPage />
+            </main>
+            <Footer />
+        </div>
+    );
+};
 
 export default App;

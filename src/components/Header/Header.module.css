@@ -1,0 +1,156 @@
+.appHeader {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 24px;
+}
+
+.logoLink {
+    display: inline-flex;
+    align-items: center;
+}
+
+.logoIcon {
+    width: 40px;
+    height: auto;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.logoIcon:hover {
+    transform: scale(1.1);
+}
+
+.burgerMenu {
+    display: none;
+    font-size: 24px;
+    background: none;
+    border: none;
+    cursor: pointer;
+}
+
+.navContainer {
+    display: flex;
+    align-items: center;
+    gap: 32px;
+}
+
+.navLinks {
+    display: flex;
+    gap: 32px;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.navItem {
+    color: #28224b;
+    font:
+            400 15px Inter,
+            sans-serif;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.navItem:hover {
+    color: #35b8be;
+}
+
+.cartIconContainer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 55px;
+    height: 55px;
+    margin-left: 65px;
+    background-color: #35b8be;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.5s ease;
+    position: relative;
+}
+
+.cartIconContainer:hover {
+    transform: scale(1.1);
+}
+
+.cartIcon {
+    width: 25px;
+    height: 17px;
+    fill: #fff;
+}
+
+.cartCounter {
+    position: absolute;
+    top: -6px;
+    right: -6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 18px;
+    height: 18px;
+    background-color: #fff;
+    color: #35b8be;
+    font-size: 12px;
+    font-weight: bold;
+    border-radius: 50%;
+    box-shadow: 0 0 3px 1px rgba(53, 184, 190, 0.5);
+}
+
+.closeMenuButton {
+    display: none;
+}
+
+@media (max-width: 700px) {
+    .burgerMenu {
+        display: block;
+        font-size: 24px;
+        background: none;
+        border: none;
+        cursor: pointer;
+    }
+
+    .navContainer {
+        display: none;
+        flex-direction: column;
+        position: fixed;
+        top: 64px;
+        right: 24px;
+        background-color: white;
+        padding: 60px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        border-radius: 8px;
+        width: 85vw;
+        z-index: 10;
+    }
+
+    .navItem {
+        font-size: 25px;
+    }
+
+    .showMenu {
+        display: flex;
+    }
+
+    .closeMenuButton {
+        display: flex;
+        align-self: flex-end;
+        font-size: 24px;
+        background: none;
+        border: none;
+        cursor: pointer;
+        color: #28224b;
+        margin-bottom: 8px;
+    }
+
+    .navLinks {
+        flex-direction: column;
+        gap: 32px;
+    }
+
+    .cartIconContainer {
+        margin: 0;
+        width: 45px;
+        height: 45px;
+    }
+}

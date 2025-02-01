@@ -1,0 +1,160 @@
+.footer {
+    width: 100%;
+    margin: 0 auto;
+    padding: 40px 20px;
+    background-color: #F5FBFC;
+    background: linear-gradient(to bottom, #f5fbfc, #eaf6f8);
+}
+
+.wrapper {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.mainContent {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    padding-bottom: 40px;
+}
+
+.logoSection {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    max-width: 30%;
+}
+
+.logo {
+    width: 40px;
+    height: 51px;
+}
+
+.footerText {
+    color: #546285;
+    font-size: 16px;
+    font-family: Inter, sans-serif;
+    font-weight: 400;
+    line-height: 27px;
+    text-align: start;
+    margin: 0;
+}
+
+.linksContainer {
+    display: flex;
+    justify-content: space-between;
+    width: 65%;
+}
+
+.linkColumn {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 28px;
+}
+
+.linkTitle {
+    color: #08090A;
+    font-size: 14px;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+}
+
+.link {
+    color: #546285;
+    font-size: 15px;
+    font-weight: 400;
+    line-height: 20px;
+    transition: all 0.2s ease-in;
+}
+
+.link:hover {
+    color: #35B8BE;
+}
+
+.divider {
+    width: 100%;
+    height: 1px;
+    background: rgba(126, 130, 143, 0.1);
+    margin: 40px 0;
+}
+
+.bottomContent {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.builtWith {
+    display: flex;
+    gap: 8px;
+    color: #353448;
+    font-size: 15px;
+    line-height: 20px;
+}
+
+.highlightedText {
+    color: #35B8BE;
+}
+
+.socialIcons {
+    display: flex;
+    gap: 24px;
+}
+
+.socialIcon {
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid rgba(126, 130, 143, 0.3);
+    border-radius: 50%;
+    transition: background-color 0.3s, transform 0.3s;
+}
+
+.socialIcon:hover {
+    background-color: rgba(53, 184, 190, 0.47);
+    transform: scale(1.1);
+}
+
+.iconImage {
+    width: 18px;
+    height: 18px;
+    opacity: 0.8;
+    transition: opacity 0.3s;
+}
+
+.socialIcon:hover .iconImage {
+    opacity: 1;
+}
+
+@media (max-width: 800px) {
+    .mainContent {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .logoSection {
+        text-align: center;
+        max-width: 100%;
+    }
+
+    .linksContainer {
+        width: 100%;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        gap: 20px;
+    }
+
+    .bottomContent {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .socialIcons {
+        margin-top: 20px;
+    }
+}
