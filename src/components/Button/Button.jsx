@@ -1,24 +1,25 @@
-import PropTypes from "prop-types";
 import styles from "./Button.module.css";
 
-const Button = ({ children, onClick, isActive, type = "button", className = "" }) => {
-    return (
-        <button
-            type={type}
-            className={`${styles.button} ${isActive ? styles.active : ""} ${className}`}
-            onClick={onClick}
-        >
-            {children}
-        </button>
-    );
-};
+function Button({ children, isActive = true, onClick, type = "button" }) {
+  const computedButtonStyles = `${styles.button} ${
+    !isActive ? styles.inactive : ""
+  }`;
 
-Button.propTypes = {
-    children: PropTypes.node.isRequired,
-    onClick: PropTypes.func,
-    isActive: PropTypes.bool,
-    type: PropTypes.string,
-    className: PropTypes.string,
-};
+  const handleButtonClick = (event) => {
+    if (onClick) {
+      onClick(event);
+    }
+  };
+
+  return (
+    <button
+      className={computedButtonStyles}
+      onClick={handleButtonClick}
+      type={type}
+    >
+      {children}
+    </button>
+  );
+}
 
 export default Button;

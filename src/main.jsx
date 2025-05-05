@@ -1,10 +1,23 @@
-import React from "react";
-import ReactDOM from "react-dom/client";
-import App from "./App";
+import { StrictMode } from "react";
+import { createRoot } from "react-dom/client";
+import "normalize.css";
 import "./index.css";
+import FoodDeliveryApplication from "./App.jsx";
 
-ReactDOM.createRoot(document.getElementById("root")).render(
-    <React.StrictMode>
-        <App />
-    </React.StrictMode>
-);
+function initializeApplication() {
+  const rootElement = document.getElementById("root");
+
+  const appRoot = createRoot(rootElement);
+
+  appRoot.render(
+    <StrictMode>
+      <FoodDeliveryApplication />
+    </StrictMode>
+  );
+
+  if (import.meta.env.DEV) {
+    console.log("Application initialized in development mode");
+  }
+}
+
+initializeApplication();

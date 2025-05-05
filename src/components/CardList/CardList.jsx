@@ -1,31 +1,20 @@
-import React from "react";
-import PropTypes from "prop-types";
-import CardItem from "./CardItem";
+import Card from "../Card/Card.jsx";
 import styles from "./CardList.module.css";
 
-const CardList = ({ items }) => {
-    if (!items || items.length === 0) {
-        return <p className={styles.noItems}>No items available.</p>;
-    }
+function CardList({ cards = [] }) {
+  const renderMenuItems = () => {
+    return cards.map((menuItem, index) => (
+      <Card
+        key={`${menuItem.name}-${index}`}
+        name={menuItem.name}
+        price={menuItem.price}
+        description={menuItem.description}
+        image={menuItem.image}
+      />
+    ));
+  };
 
-    return (
-        <div className={styles.cardList}>
-            {items.map((item) => (
-                <CardItem key={item.id} name={item.name} price={item.price} image={item.image} />
-            ))}
-        </div>
-    );
-};
-
-CardList.propTypes = {
-    items: PropTypes.arrayOf(
-        PropTypes.shape({
-            id: PropTypes.number.isRequired,
-            name: PropTypes.string.isRequired,
-            price: PropTypes.number.isRequired,
-            image: PropTypes.string.isRequired,
-        })
-    ).isRequired,
-};
+  return <div className={styles.cardList}>{renderMenuItems()}</div>;
+}
 
 export default CardList;

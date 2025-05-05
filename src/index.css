@@ -1,43 +1,107 @@
-@import "normalize.css";
+@import "normalize.css/normalize.css";
 
 * {
   box-sizing: border-box;
-  margin: 0;
-  padding: 0;
+}
+
+html,
+body,
+#root {
+  height: 100%;
 }
 
 :root {
-  font-family: "Inter", system-ui, Avenir, Helvetica, Arial, sans-serif;
-  line-height: 1.5;
-  font-weight: 400;
+  --primary-color: #35b8be;
+  --primary-color-dark: #2a9196;
+  --primary-color-light: rgba(53, 184, 190, 0.16);
+  --text-color: #08090a;
+  --text-color-secondary: #546285;
+  --background-color: #fff;
+  --border-color: rgba(53, 184, 190, 0.16);
+  --shadow-color: rgba(53, 184, 190, 0.12);
 
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
+  font-weight: 400;
+  line-height: 1.5;
+  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+
+  font-size: clamp(14px, 0.5vw + 13px, 16px);
+
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  font-synthesis: none;
+
+  scroll-behavior: smooth;
 }
 
 body {
-  min-width: 320px;
+  margin: 0;
   min-height: 100vh;
-  background-color: #f8f8f8;
-  color: #333;
+  min-width: 320px;
+  background-color: var(--background-color);
+  color: var(--text-color);
+}
+
+img {
+  display: block;
+  height: auto;
+  max-width: 100%;
 }
 
 a {
+  color: var(--primary-color);
   text-decoration: none;
-  color: #007bff;
-  transition: color 0.3s ease;
+  transition: color 0.22s ease;
 }
 
 a:hover {
-  color: #0056b3;
+  color: var(--primary-color-dark);
 }
 
-a:focus {
-  outline: 2px solid #007bff;
+h1 {
+  line-height: 1.22;
+  font-size: clamp(32px, 5vw + 16px, 50px);
 }
 
-a:active {
-  color: #004494;
+h2 {
+  line-height: 1.31;
+  font-size: clamp(24px, 3vw + 14px, 36px);
+}
+
+h3 {
+  line-height: 1.42;
+  font-size: clamp(18px, 2vw + 12px, 24px);
+}
+
+.container {
+  width: 100%;
+  max-width: 1190px;
+  padding: 0 21px;
+  margin: 0 auto;
+}
+
+@media (max-width: 768px) {
+  .container {
+    padding: 0 16px;
+  }
+}
+
+.hide-on-mobile {
+  display: block;
+}
+
+@media (max-width: 768px) {
+  .hide-on-mobile {
+    display: none;
+  }
+}
+
+.hide-on-desktop {
+  display: none;
+}
+
+@media (max-width: 768px) {
+  .hide-on-desktop {
+    display: block;
+  }
 }

@@ -1,6 +1,7 @@
 import globals from "globals";
 import js from "@eslint/js";
 import react from "eslint-plugin-react";
+import reactHooks from "eslint-plugin-react-hooks";
 import babelParser from "@babel/eslint-parser";
 
 export default [
@@ -11,13 +12,16 @@ export default [
     languageOptions: {
       globals: {
         ...globals.browser,
-        structuredClone: "readonly", // Добавляем structuredClone, если вдруг понадобится
+        structuredClone: "readonly",
       },
       parser: babelParser,
       parserOptions: {
         requireConfigFile: false,
         babelOptions: {
           presets: ["@babel/preset-react"],
+        },
+        ecmaFeatures: {
+          jsx: true,
         },
       },
     },
@@ -29,6 +33,7 @@ export default [
     plugins: {
       js,
       react,
+      "react-hooks": reactHooks,
     },
     rules: {
       "no-prototype-builtins": "off",
@@ -37,7 +42,17 @@ export default [
       "no-fallthrough": "error",
       "valid-typeof": "error",
       "no-undef": "off",
-      "no-unused-vars": ["warn", { argsIgnorePattern: "^_" }],
+      "no-unused-vars": [
+        "warn",
+        {
+          argsIgnorePattern: "^_",
+          varsIgnorePattern: "^React$",
+        },
+      ],
+      "react/jsx-uses-react": "error",
+      "react/jsx-uses-vars": "error",
+      "react-hooks/rules-of-hooks": "error",
+      "react-hooks/exhaustive-deps": "warn",
       "react/display-name": "off",
       "no-control-regex": "off",
       "no-useless-escape": "off",

@@ -1,50 +1,78 @@
 import { useState } from "react";
+import { navItems } from "../../data/headerData.js";
+import companyLogo from "../../assets/icons/logo.svg";
+import cartIcon from "../../assets/icons/cart.svg";
 import styles from "./Header.module.css";
-import logoIcon from "@/assets/icons/logo.svg";
-import cartIcon from "@/assets/icons/cart.svg";
 
-const Header = () => {
-    const [menuOpen, setMenuOpen] = useState(false);
+function Header() {
+  const [menuExpanded, setMenuExpanded] = useState(false);
 
-    const toggleMenu = () => {
-        setMenuOpen(!menuOpen);
-    };
+  const handleMenuToggle = () => {
+    setMenuExpanded(!menuExpanded);
+  };
 
-    return (
-        <header className={styles.appHeader}>
-            {/* Логотип */}
-            <a href="/" className={styles.logoLink}>
-                <img src={logoIcon} alt="Logo" className={styles.logoIcon} />
-            </a>
+  const activePageName = "Menu";
 
-            {/* Бургер-меню для мобильных устройств */}
-            <button className={styles.burgerMenu} onClick={toggleMenu}>
-                ☰
-            </button>
+  const createNavigationLinks = () => {
+    return navItems.map((navLink, itemIndex) => (
+      <span
+        key={`nav-item-${itemIndex}`}
+        className={`${styles.navItem} ${
+          navLink.label === activePageName ? styles.activeNavItem : ""
+        }`}
+      >
+        {navLink.label}
+      </span>
+    ));
+  };
 
-            {/* Навигация */}
-            <nav className={`${styles.navContainer} ${menuOpen ? styles.showMenu : ""}`}>
-                <button className={styles.closeMenuButton} onClick={toggleMenu}>
-                    ✕
-                </button>
-                <ul className={styles.navLinks}>
-                    {["Home", "Menu", "Company", "Login"].map((item) => (
-                        <li key={item}>
-                            <a href="/" className={styles.navItem}>
-                                {item}
-                            </a>
-                        </li>
-                    ))}
-                </ul>
-            </nav>
+  return (
+    <header className={styles.appHeader}>
+      <a href="/" className={styles.logoLink} aria-label="Homepage">
+        <img
+          src={companyLogo}
+          alt="Company Logo"
+          className={styles.logoIcon}
+          loading="lazy"
+        />
+      </a>
 
-            {/* Иконка корзины */}
-            <div className={styles.cartIconContainer}>
-                <img src={cartIcon} alt="Cart" className={styles.cartIcon} />
-                <span className={styles.cartCounter}>0</span>
-            </div>
-        </header>
-    );
-};
+      <button
+        className={styles.burgerMenu}
+        onClick={handleMenuToggle}
+        aria-label="Toggle navigation menu"
+        aria-expanded={menuExpanded}
+      >
+        ☰
+      </button>
+
+      <nav
+        className={`${styles.navContainer} ${
+          menuExpanded ? styles.showMenu : ""
+        }`}
+      >
+        <button
+          className={styles.closeMenuButton}
+          onClick={handleMenuToggle}
+          aria-label="Close navigation menu"
+        >
+          ✖
+        </button>
+
+        <div className={styles.navLinks}>{createNavigationLinks()}</div>
+
+        <div className={styles.cartIconContainer}>
+          <img
+            src={cartIcon}
+            alt="Shopping Cart"
+            className={styles.cartIcon}
+            loading="lazy"
+          />
+          <span className={styles.cartCounter}>1</span>
+        </div>
+      </nav>
+    </header>
+  );
+}
 
 export default Header;

@@ -1,126 +1,111 @@
-.card {
-    width: 580px;
-    height: 200px;
-    background: #fff;
-    border-radius: 6px;
-    border: 1px solid rgba(53, 184, 190, 0.15);
-    display: flex;
-    align-items: center;
-    justify-content: flex-start;
-    padding: 20px;
-    font-family: Inter, sans-serif;
-    font-weight: 400;
-    line-height: 20px;
-    transition: box-shadow 0.3s ease;
+.cardList {
+  display: grid;
+  gap: 32px;
+  grid-template-columns: repeat(1, 1fr);
+  width: 100%;
+  max-width: 1180px;
+  margin: 0 auto 58px;
+  padding: 22px;
+  justify-content: center;
 }
 
-.card:hover {
-    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+.cardList > * {
+  animation: fadeInUp 0.65s ease-out;
+  animation-fill-mode: both;
+  will-change: transform, opacity;
 }
 
-.imageContainer {
-    width: 120px;
-    height: 120px;
-    flex-shrink: 0;
-    margin-right: 20px;
+.cardList > *:nth-child(2) {
+  animation-delay: 0.16s;
+}
+.cardList > *:nth-child(3) {
+  animation-delay: 0.32s;
+}
+.cardList > *:nth-child(4) {
+  animation-delay: 0.48s;
+}
+.cardList > *:nth-child(5) {
+  animation-delay: 0.64s;
+}
+.cardList > *:nth-child(6) {
+  animation-delay: 0.78s;
+}
+.cardList > *:nth-child(n + 7) {
+  animation-delay: 0.92s;
 }
 
-.imageContainer img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    border-radius: 6px;
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 28px, 0);
+  }
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
 }
 
-.cardContent {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    flex-grow: 1;
+@media (min-width: 768px) {
+  .cardList {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 26px;
+    padding: 21px 24px;
+  }
 }
 
-.cardHeader {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 10px;
+@media (min-width: 1200px) {
+  .cardList {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 32px;
+    max-width: 1180px;
+    padding: 22px 32px;
+  }
 }
 
-.cardName {
-    color: #08090A;
-    font-size: 18px;
-    font-weight: bold;
-    letter-spacing: 0.6px;
+@media (min-width: 992px) and (max-width: 1199px) {
+  .cardList {
+    max-width: 900px;
+  }
 }
 
-.cardPrice {
-    color: #35B8BE;
-    font-size: 15px;
-    font-weight: 500;
+@media (max-width: 767px) {
+  .cardList {
+    padding: 16px;
+    gap: 21px;
+    animation-duration: 0.42s;
+  }
+
+  .cardList > * {
+    animation-duration: 0.42s;
+  }
+
+  .cardList > *:nth-child(2) {
+    animation-delay: 0.12s;
+  }
+  .cardList > *:nth-child(3) {
+    animation-delay: 0.22s;
+  }
+  .cardList > *:nth-child(n + 4) {
+    animation-delay: 0.32s;
+  }
 }
 
-.cardDescription {
-    max-width: 350px;
-    color: #546285;
-    font-size: 16px;
-    line-height: 24px;
-    text-align: start;
-    letter-spacing: 0.32px;
-    margin-bottom: 5px;
+@media (max-width: 480px) {
+  .cardList {
+    padding: 10px;
+    gap: 15px;
+    margin-bottom: 40px;
+  }
+
+  .cardList > *:nth-child(n) {
+    animation-delay: 0s;
+  }
 }
 
-.cardActions {
-    display: flex;
-    gap: 10px;
-    align-items: center;
-}
-
-.quantityInput {
-    width: 60px;
-    height: 40px;
-    background: #FAFAFA;
-    border: 1px solid #DDDDDD;
-    border-radius: 6px;
-    text-align: center;
-    font-size: 16px;
-    color: #08090A;
-}
-
-.addToCart {
-    height: 40px;
-    background-color: #35B8BE;
-    color: white;
-    border: none;
-    border-radius: 6px;
-    font-weight: 500;
-    padding: 10px 20px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-}
-
-.addToCart:hover {
-    background-color: #2AA1A7;
-}
-
-@media (max-width: 900px) {
-    .card {
-        width: 100%;
-        flex-direction: column;
-        height: auto;
-        align-items: center;
-        text-align: center;
-    }
-
-    .imageContainer {
-        margin-right: 0;
-        margin-bottom: 10px;
-    }
-
-    .cardContent {
-        align-items: center;
-    }
-
-    .cardActions {
-        justify-content: center;
-    }
+@media (prefers-reduced-motion: reduce) {
+  .cardList > * {
+    animation: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+  }
 }

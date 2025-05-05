@@ -1,19 +1,34 @@
-import React from "react";
-import Header from "./components/Header/Header";
-import Footer from "./components/Footer/Footer";
-import MenuPage from "./components/MenuPage/MenuPage";
 import "./App.css";
+import { createContext, useState } from "react";
+import MenuPage from "./pages/MenuPage.jsx";
 
-const App = () => {
-    return (
-        <div className="app-container">
-            <Header />
-            <main className="content">
-                <MenuPage />
-            </main>
-            <Footer />
-        </div>
-    );
-};
+export const AppContext = createContext(null);
+
+function App() {
+  const [appSettings, setAppSettings] = useState({
+    theme: "light",
+    language: "en",
+  });
+
+  const toggleTheme = () => {
+    setAppSettings((prev) => ({
+      ...prev,
+      theme: prev.theme === "light" ? "dark" : "light",
+    }));
+  };
+
+  return (
+    <AppContext.Provider
+      value={{
+        settings: appSettings,
+        toggleTheme,
+      }}
+    >
+      <div className={`App ${appSettings.theme}-theme`}>
+        <MenuPage />
+      </div>
+    </AppContext.Provider>
+  );
+}
 
 export default App;
