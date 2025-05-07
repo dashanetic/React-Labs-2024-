@@ -1,0 +1,111 @@
+.cardList {
+  display: grid;
+  gap: 32px;
+  grid-template-columns: repeat(1, 1fr);
+  width: 100%;
+  max-width: 1180px;
+  margin: 0 auto 58px;
+  padding: 22px;
+  justify-content: center;
+}
+
+.cardList > * {
+  animation: fadeInUp 0.65s ease-out;
+  animation-fill-mode: both;
+  will-change: transform, opacity;
+}
+
+.cardList > *:nth-child(2) {
+  animation-delay: 0.16s;
+}
+.cardList > *:nth-child(3) {
+  animation-delay: 0.32s;
+}
+.cardList > *:nth-child(4) {
+  animation-delay: 0.48s;
+}
+.cardList > *:nth-child(5) {
+  animation-delay: 0.64s;
+}
+.cardList > *:nth-child(6) {
+  animation-delay: 0.78s;
+}
+.cardList > *:nth-child(n + 7) {
+  animation-delay: 0.92s;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 28px, 0);
+  }
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+@media (min-width: 768px) {
+  .cardList {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 26px;
+    padding: 21px 24px;
+  }
+}
+
+@media (min-width: 1200px) {
+  .cardList {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 32px;
+    max-width: 1180px;
+    padding: 22px 32px;
+  }
+}
+
+@media (min-width: 992px) and (max-width: 1199px) {
+  .cardList {
+    max-width: 900px;
+  }
+}
+
+@media (max-width: 767px) {
+  .cardList {
+    padding: 16px;
+    gap: 21px;
+    animation-duration: 0.42s;
+  }
+
+  .cardList > * {
+    animation-duration: 0.42s;
+  }
+
+  .cardList > *:nth-child(2) {
+    animation-delay: 0.12s;
+  }
+  .cardList > *:nth-child(3) {
+    animation-delay: 0.22s;
+  }
+  .cardList > *:nth-child(n + 4) {
+    animation-delay: 0.32s;
+  }
+}
+
+@media (max-width: 480px) {
+  .cardList {
+    padding: 10px;
+    gap: 15px;
+    margin-bottom: 40px;
+  }
+
+  .cardList > *:nth-child(n) {
+    animation-delay: 0s;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cardList > * {
+    animation: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+  }
+}
