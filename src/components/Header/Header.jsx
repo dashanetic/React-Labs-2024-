@@ -1,12 +1,14 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import { navItems } from "../../data/headerData.js";
 import companyLogo from "../../assets/icons/logo.svg";
 import cartIcon from "../../assets/icons/cart.svg";
 import styles from "./Header.module.css";
+import { AppContext } from "../../App.jsx";
 
 function Header() {
   const [menuExpanded, setMenuExpanded] = useState(false);
   const [cartItemCount, setCartItemCount] = useState(0);
+  const { currentPage, navigateTo } = useContext(AppContext);
 
   const incrementCartCount = (quantity = 1) => {
     setCartItemCount((prevCount) => prevCount + quantity);
@@ -17,14 +19,24 @@ function Header() {
   };
 
   const createNavigationLinks = () => {
-    const activePageName = "Menu";
-
     return navItems.map((navLink, itemIndex) => (
       <span
         key={`nav-item-${itemIndex}`}
         className={`${styles.navItem} ${
-          navLink.label === activePageName ? styles.activeNavItem : ""
+          (navLink.label === "Home" && currentPage === "home") ||
+          (navLink.label === "Menu" && currentPage === "menu")
+            ? styles.activeNavItem
+            : ""
         }`}
+        onClick={() => {
+          if (navLink.label === "Home") {
+            navigateTo("home");
+          } else if (navLink.label === "Menu") {
+            navigateTo("menu");
+          }
+          setMenuExpanded(false); // Закрываем мобильное меню при клике
+        }}
+        style={{ cursor: "pointer" }}
       >
         {navLink.label}
       </span>
@@ -44,7 +56,8 @@ function Header() {
       <div
         className={styles.logoLink}
         aria-label="Homepage"
-        style={{ cursor: "default" }}
+        style={{ cursor: "pointer" }}
+        onClick={() => navigateTo("home")}
       >
         <img
           src={companyLogo}

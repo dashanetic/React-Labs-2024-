@@ -1,6 +1,7 @@
 import "./App.css";
 import { createContext, useState } from "react";
 import MenuPage from "./pages/MenuPage.jsx";
+import HomePage from "./pages/HomePage.jsx";
 import ApiService from "./services/ApiService.js";
 
 export const AppContext = createContext(null);
@@ -15,6 +16,7 @@ function App() {
   const [isSubmittingOrder, setIsSubmittingOrder] = useState(false);
   const [orderSubmitted, setOrderSubmitted] = useState(false);
   const [orderError, setOrderError] = useState(null);
+  const [currentPage, setCurrentPage] = useState("home");
 
   const toggleTheme = () => {
     setAppSettings((prevSettings) => ({
@@ -106,6 +108,10 @@ function App() {
     }
   };
 
+  const navigateTo = (page) => {
+    setCurrentPage(page);
+  };
+
   const contextValue = {
     settings: appSettings,
     toggleTheme,
@@ -121,13 +127,23 @@ function App() {
     clearCart,
     calculateTotal,
     submitOrder,
+    currentPage,
+    navigateTo,
+  };
+
+  const renderPage = () => {
+    switch (currentPage) {
+      case "menu":
+        return <MenuPage />;
+      case "home":
+      default:
+        return <HomePage />;
+    }
   };
 
   return (
     <AppContext.Provider value={contextValue}>
-      <div className={`App ${appSettings.theme}-theme`}>
-        <MenuPage />
-      </div>
+      <div className={`App ${appSettings.theme}-theme`}>{renderPage()}</div>
     </AppContext.Provider>
   );
 }
