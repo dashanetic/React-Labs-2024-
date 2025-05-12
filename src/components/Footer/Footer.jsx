@@ -1,10 +1,10 @@
-import { Component } from "react";
+import React from "react";
 import styles from "./Footer.module.css";
 import restaurantLogo from "../../assets/icons/logo.svg";
 import { linkSections, socialIcons } from "../../data/footerData.js";
 
-class Footer extends Component {
-  generateNavigationColumns = () => {
+function Footer() {
+  const generateNavigationColumns = () => {
     return linkSections.map((section, sectionIndex) => {
       const isTemplateSection = section.title === "TEMPLATE";
 
@@ -37,7 +37,7 @@ class Footer extends Component {
     });
   };
 
-  generateSocialMediaLinks = () => {
+  const generateSocialMediaLinks = () => {
     return socialIcons.map((platform, index) => (
       <span
         key={`social-${index}`}
@@ -55,56 +55,51 @@ class Footer extends Component {
     ));
   };
 
-  render() {
-    return (
-      <footer className={styles.footer}>
-        <div className={styles.wrapper}>
-          <div className={styles.mainContent}>
-            <div className={styles.logoSection}>
-              <img
-                src={restaurantLogo}
-                alt="Restaurant Logo"
-                className={styles.logo}
-                loading="lazy"
-              />
-              <p className={styles.footerText}>
-                Takeaway & Delivery template for small - medium businesses.
-              </p>
-            </div>
-
-            <div className={styles.linksContainer}>
-              {this.generateNavigationColumns()}
-            </div>
+  return (
+    <footer className={styles.footer}>
+      <div className={styles.wrapper}>
+        <div className={styles.mainContent}>
+          <div className={styles.logoSection}>
+            <img
+              src={restaurantLogo}
+              alt="Restaurant Logo"
+              className={styles.logo}
+              loading="lazy"
+            />
+            <p className={styles.footerText}>
+              Takeaway & Delivery template for small - medium businesses.
+            </p>
           </div>
 
-          <div className={styles.divider}></div>
-
-          <div className={styles.bottomContent}>
-            <div className={styles.builtWith}>
-              <span>Built by</span>
-              {/* Заменяем ссылки на span */}
-              <span
-                className={styles.highlightedText}
-                style={{ cursor: "default" }}
-              >
-                Flowbase
-              </span>
-              <span>· Powered by</span>
-              <span
-                className={styles.highlightedText}
-                style={{ cursor: "default" }}
-              >
-                Webflow
-              </span>
-            </div>
-            <div className={styles.socialIcons}>
-              {this.generateSocialMediaLinks()}
-            </div>
+          <div className={styles.linksContainer}>
+            {generateNavigationColumns()}
           </div>
         </div>
-      </footer>
-    );
-  }
+
+        <div className={styles.divider}></div>
+
+        <div className={styles.bottomContent}>
+          <div className={styles.builtWith}>
+            <span>Built by</span>
+            <span
+              className={styles.highlightedText}
+              style={{ cursor: "default" }}
+            >
+              Flowbase
+            </span>
+            <span>· Powered by</span>
+            <span
+              className={styles.highlightedText}
+              style={{ cursor: "default" }}
+            >
+              Webflow
+            </span>
+          </div>
+          <div className={styles.socialIcons}>{generateSocialMediaLinks()}</div>
+        </div>
+      </div>
+    </footer>
+  );
 }
 
 export default Footer;

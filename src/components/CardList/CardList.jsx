@@ -1,11 +1,10 @@
-import { Component } from "react";
+import React from "react";
 import Card from "../Card/Card.jsx";
 import styles from "./CardList.module.css";
 
-class CardList extends Component {
-  renderMenuItems = () => {
-    const { cards = [] } = this.props;
-
+function CardList({ cards = [] }) {
+  // Отрисовка элементов меню
+  const renderMenuItems = () => {
     return cards.map((menuItem, index) => (
       <Card
         key={`${menuItem.name}-${index}`}
@@ -17,9 +16,7 @@ class CardList extends Component {
     ));
   };
 
-  render() {
-    return <div className={styles.cardList}>{this.renderMenuItems()}</div>;
-  }
+  return <div className={styles.cardList}>{renderMenuItems()}</div>;
 }
 
 export default CardList;

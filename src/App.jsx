@@ -1,102 +1,86 @@
 import "./App.css";
-import { Component, createContext } from "react";
+import { createContext, useState } from "react";
 import MenuPage from "./pages/MenuPage.jsx";
 import ApiService from "./services/ApiService.js";
 
 export const AppContext = createContext(null);
 
-class App extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      appSettings: {
-        theme: "light",
-        language: "en",
-      },
-      cart: [],
-      isCartOpen: false,
-      isSubmittingOrder: false,
-      orderSubmitted: false,
-      orderError: null,
-    };
-  }
+function App() {
+  const [appSettings, setAppSettings] = useState({
+    theme: "light",
+    language: "en",
+  });
+  const [cart, setCart] = useState([]);
+  const [isCartOpen, setIsCartOpen] = useState(false);
+  const [isSubmittingOrder, setIsSubmittingOrder] = useState(false);
+  const [orderSubmitted, setOrderSubmitted] = useState(false);
+  const [orderError, setOrderError] = useState(null);
 
-  toggleTheme = () => {
-    this.setState((prevState) => ({
-      appSettings: {
-        ...prevState.appSettings,
-        theme: prevState.appSettings.theme === "light" ? "dark" : "light",
-      },
+  const toggleTheme = () => {
+    setAppSettings((prevSettings) => ({
+      ...prevSettings,
+      theme: prevSettings.theme === "light" ? "dark" : "light",
     }));
   };
 
-  toggleCart = () => {
-    this.setState((prevState) => ({
-      isCartOpen: !prevState.isCartOpen,
-    }));
+  const toggleCart = () => {
+    setIsCartOpen((prevState) => !prevState);
   };
 
-  addToCart = (item, quantity = 1) => {
-    this.setState((prevState) => {
-      const existingItemIndex = prevState.cart.findIndex(
+  const addToCart = (item, quantity = 1) => {
+    setCart((prevCart) => {
+      const existingItemIndex = prevCart.findIndex(
         (cartItem) => cartItem.id === item.id
       );
 
-      let updatedCart;
-
       if (existingItemIndex !== -1) {
-        updatedCart = [...prevState.cart];
+        const updatedCart = [...prevCart];
         updatedCart[existingItemIndex] = {
           ...updatedCart[existingItemIndex],
           quantity: updatedCart[existingItemIndex].quantity + quantity,
         };
+        return updatedCart;
       } else {
-        updatedCart = [...prevState.cart, { ...item, quantity }];
+        return [...prevCart, { ...item, quantity }];
       }
-
-      return { cart: updatedCart };
     });
   };
 
-  updateCartItemQuantity = (itemId, newQuantity) => {
+  const updateCartItemQuantity = (itemId, newQuantity) => {
     if (newQuantity <= 0) {
-      this.removeFromCart(itemId);
+      removeFromCart(itemId);
       return;
     }
 
-    this.setState((prevState) => ({
-      cart: prevState.cart.map((item) =>
+    setCart((prevCart) =>
+      prevCart.map((item) =>
         item.id === itemId ? { ...item, quantity: newQuantity } : item
-      ),
-    }));
-  };
-
-  removeFromCart = (itemId) => {
-    this.setState((prevState) => ({
-      cart: prevState.cart.filter((item) => item.id !== itemId),
-    }));
-  };
-
-  clearCart = () => {
-    this.setState({ cart: [] });
-  };
-
-  calculateTotal = () => {
-    return this.state.cart.reduce(
-      (total, item) => total + item.price * item.quantity,
-      0
+      )
     );
   };
 
-  submitOrder = async () => {
-    if (this.state.cart.length === 0) return;
+  const removeFromCart = (itemId) => {
+    setCart((prevCart) => prevCart.filter((item) => item.id !== itemId));
+  };
 
-    this.setState({ isSubmittingOrder: true, orderError: null });
+  const clearCart = () => {
+    setCart([]);
+  };
+
+  const calculateTotal = () => {
+    return cart.reduce((total, item) => total + item.price * item.quantity, 0);
+  };
+
+  const submitOrder = async () => {
+    if (cart.length === 0) return;
+
+    setIsSubmittingOrder(true);
+    setOrderError(null);
 
     try {
       const orderData = {
-        items: this.state.cart,
-        total: this.calculateTotal(),
+        items: cart,
+        total: calculateTotal(),
         customer: {
           name: "Customer",
           phone: "+7999999999",
@@ -108,59 +92,44 @@ class App extends Component {
 
       await ApiService.createOrder(orderData);
 
-      this.setState({
-        isSubmittingOrder: false,
-        orderSubmitted: true,
-        cart: [],
-      });
+      setIsSubmittingOrder(false);
+      setOrderSubmitted(true);
+      setCart([]);
 
       setTimeout(() => {
-        this.setState({ orderSubmitted: false });
+        setOrderSubmitted(false);
       }, 3000);
     } catch (error) {
       console.error("Failed to submit order:", error);
-      this.setState({
-        isSubmittingOrder: false,
-        orderError: "Failed to submit your order. Please try again.",
-      });
+      setIsSubmittingOrder(false);
+      setOrderError("Failed to submit your order. Please try again.");
     }
   };
 
-  render() {
-    const {
-      appSettings,
-      cart,
-      isCartOpen,
-      isSubmittingOrder,
-      orderSubmitted,
-      orderError,
-    } = this.state;
+  const contextValue = {
+    settings: appSettings,
+    toggleTheme,
+    cart,
+    isCartOpen,
+    isSubmittingOrder,
+    orderSubmitted,
+    orderError,
+    toggleCart,
+    addToCart,
+    updateCartItemQuantity,
+    removeFromCart,
+    clearCart,
+    calculateTotal,
+    submitOrder,
+  };
 
-    return (
-      <AppContext.Provider
-        value={{
-          settings: appSettings,
-          toggleTheme: this.toggleTheme,
-          cart,
-          isCartOpen,
-          isSubmittingOrder,
-          orderSubmitted,
-          orderError,
-          toggleCart: this.toggleCart,
-          addToCart: this.addToCart,
-          updateCartItemQuantity: this.updateCartItemQuantity,
-          removeFromCart: this.removeFromCart,
-          clearCart: this.clearCart,
-          calculateTotal: this.calculateTotal,
-          submitOrder: this.submitOrder,
-        }}
-      >
-        <div className={`App ${appSettings.theme}-theme`}>
-          <MenuPage />
-        </div>
-      </AppContext.Provider>
-    );
-  }
+  return (
+    <AppContext.Provider value={contextValue}>
+      <div className={`App ${appSettings.theme}-theme`}>
+        <MenuPage />
+      </div>
+    </AppContext.Provider>
+  );
 }
 
 export default App;

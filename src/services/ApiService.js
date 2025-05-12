@@ -2,8 +2,7 @@ const BASE_URL = "https://65de35f3dccfcd562f5691bb.mockapi.io/api/v1";
 
 class ApiService {
   /**
-   * Get all meals
-   * @returns {Promise<Array>} - Promise with array of meals
+   * Get all meals from API
    */
   static async getMeals() {
     try {
@@ -25,8 +24,7 @@ class ApiService {
   }
 
   /**
-   * Get all orders
-   * @returns {Promise<Array>} - Promise with array of orders
+   * Get all orders from API
    */
   static async getOrders() {
     try {
@@ -46,8 +44,6 @@ class ApiService {
 
   /**
    * Create a new order
-   * @param {Object} orderData - Order data
-   * @returns {Promise<Object>} - Promise with created order
    */
   static async createOrder(orderData) {
     try {
@@ -73,8 +69,6 @@ class ApiService {
 
   /**
    * Get a specific order by ID
-   * @param {string} orderId - Order ID
-   * @returns {Promise<Object>} - Promise with order data
    */
   static async getOrderById(orderId) {
     try {

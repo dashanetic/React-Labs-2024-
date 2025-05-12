@@ -1,39 +1,22 @@
-import { Component } from "react";
+import { useState, useEffect } from "react";
 import { navItems } from "../../data/headerData.js";
 import companyLogo from "../../assets/icons/logo.svg";
 import cartIcon from "../../assets/icons/cart.svg";
 import styles from "./Header.module.css";
 
-class Header extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      menuExpanded: false,
-      cartItemCount: 0,
-    };
-  }
+function Header() {
+  const [menuExpanded, setMenuExpanded] = useState(false);
+  const [cartItemCount, setCartItemCount] = useState(0);
 
-  componentDidMount() {
-    window.incrementCartCount = this.incrementCartCount;
-  }
-
-  componentWillUnmount() {
-    delete window.incrementCartCount;
-  }
-
-  incrementCartCount = (quantity = 1) => {
-    this.setState((prevState) => ({
-      cartItemCount: prevState.cartItemCount + quantity,
-    }));
+  const incrementCartCount = (quantity = 1) => {
+    setCartItemCount((prevCount) => prevCount + quantity);
   };
 
-  handleMenuToggle = () => {
-    this.setState((prevState) => ({
-      menuExpanded: !prevState.menuExpanded,
-    }));
+  const handleMenuToggle = () => {
+    setMenuExpanded((prevState) => !prevState);
   };
 
-  createNavigationLinks = () => {
+  const createNavigationLinks = () => {
     const activePageName = "Menu";
 
     return navItems.map((navLink, itemIndex) => (
@@ -48,64 +31,67 @@ class Header extends Component {
     ));
   };
 
-  render() {
-    const { menuExpanded, cartItemCount } = this.state;
+  useEffect(() => {
+    window.incrementCartCount = incrementCartCount;
 
-    return (
-      <header className={styles.appHeader}>
-        {/* Заменяем ссылку логотипа на div с тем же стилем */}
-        <div
-          className={styles.logoLink}
-          aria-label="Homepage"
-          style={{ cursor: "default" }}
-        >
-          <img
-            src={companyLogo}
-            alt="Company Logo"
-            className={styles.logoIcon}
-            loading="lazy"
-          />
-        </div>
+    return () => {
+      delete window.incrementCartCount;
+    };
+  }, []);
 
+  return (
+    <header className={styles.appHeader}>
+      <div
+        className={styles.logoLink}
+        aria-label="Homepage"
+        style={{ cursor: "default" }}
+      >
+        <img
+          src={companyLogo}
+          alt="Company Logo"
+          className={styles.logoIcon}
+          loading="lazy"
+        />
+      </div>
+
+      <button
+        className={styles.burgerMenu}
+        onClick={handleMenuToggle}
+        aria-label="Toggle navigation menu"
+        aria-expanded={menuExpanded}
+      >
+        ☰
+      </button>
+
+      <nav
+        className={`${styles.navContainer} ${
+          menuExpanded ? styles.showMenu : ""
+        }`}
+      >
         <button
-          className={styles.burgerMenu}
-          onClick={this.handleMenuToggle}
-          aria-label="Toggle navigation menu"
-          aria-expanded={menuExpanded}
+          className={styles.closeMenuButton}
+          onClick={handleMenuToggle}
+          aria-label="Close navigation menu"
         >
-          ☰
+          ✖
         </button>
 
-        <nav
-          className={`${styles.navContainer} ${
-            menuExpanded ? styles.showMenu : ""
-          }`}
-        >
-          <button
-            className={styles.closeMenuButton}
-            onClick={this.handleMenuToggle}
-            aria-label="Close navigation menu"
-          >
-            ✖
-          </button>
+        <div className={styles.navLinks}>{createNavigationLinks()}</div>
 
-          <div className={styles.navLinks}>{this.createNavigationLinks()}</div>
-
-          <div className={styles.cartIconContainer}>
-            <img
-              src={cartIcon}
-              alt="Shopping Cart"
-              className={styles.cartIcon}
-              loading="lazy"
-            />
-            {cartItemCount > 0 && (
-              <span className={styles.cartCounter}>{cartItemCount}</span>
-            )}
-          </div>
-        </nav>
-      </header>
-    );
-  }
+        <div className={styles.cartIconContainer}>
+          <img
+            src={cartIcon}
+            alt="Shopping Cart"
+            className={styles.cartIcon}
+            loading="lazy"
+          />
+          {cartItemCount > 0 && (
+            <span className={styles.cartCounter}>{cartItemCount}</span>
+          )}
+        </div>
+      </nav>
+    </header>
+  );
 }
 
 export default Header;
