@@ -1,0 +1,70 @@
+#root {
+  width: 100%;
+  max-width: 100%;
+  padding: 0;
+  margin: 0;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  overflow-x: hidden;
+}
+
+.App {
+  width: 100%;
+  min-height: 100vh;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  transition: background-color 0.35s ease-in-out, color 0.35s ease-in-out;
+}
+
+.App.light-theme {
+  --bg-main: #ffffff;
+  --text-main: #333333;
+  --accent-color: #35b8be;
+}
+
+.App.dark-theme {
+  --bg-main: #1e1e1e;
+  --text-main: #e0e0e0;
+  --accent-color: #4cc7cd;
+}
+
+.dining-container {
+  flex: 1;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+
+.dining-container.mobile-view {
+  padding-bottom: 65px;
+}
+
+main.container {
+  flex: 1 0 auto;
+  width: 100%;
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 0 24px;
+  box-sizing: border-box;
+}
+
+@media (max-width: 768px) {
+  main.container {
+    padding: 0 16px;
+  }
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  border: 0;
+}
