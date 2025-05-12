@@ -21,6 +21,7 @@ dist-ssr
 *.sln
 *.sw?
 .vite
+.husky
 
 coverage
 .nyc_output

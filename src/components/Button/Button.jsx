@@ -1,25 +1,31 @@
+import { Component } from "react";
 import styles from "./Button.module.css";
 
-function Button({ children, isActive = true, onClick, type = "button" }) {
-  const computedButtonStyles = `${styles.button} ${
-    !isActive ? styles.inactive : ""
-  }`;
-
-  const handleButtonClick = (event) => {
+class Button extends Component {
+  handleButtonClick = (event) => {
+    const { onClick } = this.props;
     if (onClick) {
       onClick(event);
     }
   };
 
-  return (
-    <button
-      className={computedButtonStyles}
-      onClick={handleButtonClick}
-      type={type}
-    >
-      {children}
-    </button>
-  );
+  render() {
+    const { children, isActive = true, type = "button" } = this.props;
+
+    const computedButtonStyles = `${styles.button} ${
+      !isActive ? styles.inactive : ""
+    }`;
+
+    return (
+      <button
+        className={computedButtonStyles}
+        onClick={this.handleButtonClick}
+        type={type}
+      >
+        {children}
+      </button>
+    );
+  }
 }
 
 export default Button;

@@ -2,7 +2,7 @@ import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import "normalize.css";
 import "./index.css";
-import FoodDeliveryApplication from "./App.jsx";
+import App from "./App.jsx";
 
 function initializeApplication() {
   const rootElement = document.getElementById("root");
@@ -11,7 +11,7 @@ function initializeApplication() {
 
   appRoot.render(
     <StrictMode>
-      <FoodDeliveryApplication />
+      <App />
     </StrictMode>
   );
 

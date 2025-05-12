@@ -67,6 +67,34 @@
   text-align: start;
 }
 
+.truncatedDescription {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.expandedDescription {
+  display: block;
+}
+
+.toggleButton {
+  background: none;
+  border: none;
+  color: #35b8be;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
+  padding: 0;
+  margin-bottom: 8px;
+  text-decoration: underline;
+  align-self: flex-start;
+}
+
+.toggleButton:hover {
+  color: #2a9398;
+}
+
 .cardActions {
   gap: 10px;
   display: flex;

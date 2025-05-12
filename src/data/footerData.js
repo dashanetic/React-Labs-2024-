@@ -23,10 +23,26 @@ const footerConfiguration = {
       sectionName: "TEMPLATE",
       sectionId: "template-links",
       navigationItems: [
-        { linkText: "Style Guide", destination: "/", isExternal: false },
-        { linkText: "Changelog", destination: "/", isExternal: false },
-        { linkText: "Licence", destination: "/", isExternal: false },
-        { linkText: "Webflow University", destination: "/", isExternal: true },
+        {
+          linkText: "Style Guide",
+          destination: "https://www.google.com/",
+          isExternal: true,
+        },
+        {
+          linkText: "Changelog",
+          destination: "https://www.google.com/",
+          isExternal: true,
+        },
+        {
+          linkText: "Licence",
+          destination: "https://www.google.com/",
+          isExternal: true,
+        },
+        {
+          linkText: "Webflow University",
+          destination: "https://www.google.com/",
+          isExternal: true,
+        },
       ],
     },
     {

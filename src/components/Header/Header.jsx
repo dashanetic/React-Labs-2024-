@@ -1,19 +1,41 @@
-import { useState } from "react";
+import { Component } from "react";
 import { navItems } from "../../data/headerData.js";
 import companyLogo from "../../assets/icons/logo.svg";
 import cartIcon from "../../assets/icons/cart.svg";
 import styles from "./Header.module.css";
 
-function Header() {
-  const [menuExpanded, setMenuExpanded] = useState(false);
+class Header extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      menuExpanded: false,
+      cartItemCount: 0,
+    };
+  }
 
-  const handleMenuToggle = () => {
-    setMenuExpanded(!menuExpanded);
+  componentDidMount() {
+    window.incrementCartCount = this.incrementCartCount;
+  }
+
+  componentWillUnmount() {
+    delete window.incrementCartCount;
+  }
+
+  incrementCartCount = (quantity = 1) => {
+    this.setState((prevState) => ({
+      cartItemCount: prevState.cartItemCount + quantity,
+    }));
   };
 
-  const activePageName = "Menu";
+  handleMenuToggle = () => {
+    this.setState((prevState) => ({
+      menuExpanded: !prevState.menuExpanded,
+    }));
+  };
 
-  const createNavigationLinks = () => {
+  createNavigationLinks = () => {
+    const activePageName = "Menu";
+
     return navItems.map((navLink, itemIndex) => (
       <span
         key={`nav-item-${itemIndex}`}
@@ -26,53 +48,64 @@ function Header() {
     ));
   };
 
-  return (
-    <header className={styles.appHeader}>
-      <a href="/" className={styles.logoLink} aria-label="Homepage">
-        <img
-          src={companyLogo}
-          alt="Company Logo"
-          className={styles.logoIcon}
-          loading="lazy"
-        />
-      </a>
+  render() {
+    const { menuExpanded, cartItemCount } = this.state;
 
-      <button
-        className={styles.burgerMenu}
-        onClick={handleMenuToggle}
-        aria-label="Toggle navigation menu"
-        aria-expanded={menuExpanded}
-      >
-        ☰
-      </button>
-
-      <nav
-        className={`${styles.navContainer} ${
-          menuExpanded ? styles.showMenu : ""
-        }`}
-      >
-        <button
-          className={styles.closeMenuButton}
-          onClick={handleMenuToggle}
-          aria-label="Close navigation menu"
+    return (
+      <header className={styles.appHeader}>
+        {/* Заменяем ссылку логотипа на div с тем же стилем */}
+        <div
+          className={styles.logoLink}
+          aria-label="Homepage"
+          style={{ cursor: "default" }}
         >
-          ✖
-        </button>
-
-        <div className={styles.navLinks}>{createNavigationLinks()}</div>
-
-        <div className={styles.cartIconContainer}>
           <img
-            src={cartIcon}
-            alt="Shopping Cart"
-            className={styles.cartIcon}
+            src={companyLogo}
+            alt="Company Logo"
+            className={styles.logoIcon}
             loading="lazy"
           />
-          <span className={styles.cartCounter}>1</span>
         </div>
-      </nav>
-    </header>
-  );
+
+        <button
+          className={styles.burgerMenu}
+          onClick={this.handleMenuToggle}
+          aria-label="Toggle navigation menu"
+          aria-expanded={menuExpanded}
+        >
+          ☰
+        </button>
+
+        <nav
+          className={`${styles.navContainer} ${
+            menuExpanded ? styles.showMenu : ""
+          }`}
+        >
+          <button
+            className={styles.closeMenuButton}
+            onClick={this.handleMenuToggle}
+            aria-label="Close navigation menu"
+          >
+            ✖
+          </button>
+
+          <div className={styles.navLinks}>{this.createNavigationLinks()}</div>
+
+          <div className={styles.cartIconContainer}>
+            <img
+              src={cartIcon}
+              alt="Shopping Cart"
+              className={styles.cartIcon}
+              loading="lazy"
+            />
+            {cartItemCount > 0 && (
+              <span className={styles.cartCounter}>{cartItemCount}</span>
+            )}
+          </div>
+        </nav>
+      </header>
+    );
+  }
 }
 
 export default Header;
