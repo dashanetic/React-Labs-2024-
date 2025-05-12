@@ -1,0 +1,169 @@
+.appHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 17px 25px;
+}
+
+.logoLink {
+  display: inline-flex;
+  align-items: center;
+  margin-left: 118px;
+}
+
+.logoIcon {
+  width: 41px;
+  height: auto;
+  cursor: pointer;
+  transition: transform 0.32s ease;
+}
+
+.logoIcon:hover {
+  transform: scale(1.12);
+}
+
+.burgerMenu {
+  display: none;
+  font-size: 24px;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.navContainer {
+  display: flex;
+  align-items: center;
+  gap: 31px;
+}
+
+.navLinks {
+  display: flex;
+  gap: 33px;
+}
+
+.navItem {
+  color: #28224b;
+  font: 400 14px Inter, sans-serif;
+  cursor: pointer;
+  transition: color 0.22s ease;
+  position: relative;
+}
+
+.navItem:hover {
+  color: #35b8be;
+}
+
+.navItem:focus-visible {
+  outline: 2px solid #35b8be;
+  outline-offset: 2px;
+}
+
+.activeNavItem {
+  color: #35b8be;
+  font-weight: 600;
+  position: relative;
+}
+
+.cartIconContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 54px;
+  height: 54px;
+  margin-left: 64px;
+  background-color: #35b8be;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: transform 0.48s ease, background-color 0.3s ease;
+  position: relative;
+}
+
+.cartIconContainer:hover {
+  transform: scale(1.09);
+}
+
+.cartIconContainer:focus-visible {
+  outline: 2px solid #2a9196;
+  outline-offset: 2px;
+}
+
+.cartIcon {
+  width: 24px;
+  height: 16px;
+  fill: #fff;
+}
+
+.cartCounter {
+  position: absolute;
+  top: -5px;
+  right: -5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 19px;
+  height: 19px;
+  background-color: #fff;
+  color: #35b8be;
+  font-size: 11px;
+  font-weight: bold;
+  border-radius: 50%;
+  box-shadow: 0 0 3px 1px rgba(53, 184, 190, 0.52);
+}
+
+.closeMenuButton {
+  display: none;
+}
+
+@media (max-width: 700px) {
+  .burgerMenu {
+    display: block;
+    font-size: 24px;
+    background: none;
+    border: none;
+    cursor: pointer;
+  }
+
+  .navContainer {
+    display: none;
+    flex-direction: column;
+    position: fixed;
+    top: 64px;
+    right: 24px;
+    background-color: white;
+    padding: 60px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    width: 85vw;
+    z-index: 10;
+  }
+
+  .navItem {
+    font-size: 25px;
+  }
+
+  .showMenu {
+    display: flex;
+  }
+
+  .closeMenuButton {
+    display: flex;
+    align-self: flex-end;
+    font-size: 24px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: #28224b;
+    margin-bottom: 8px;
+  }
+
+  .navLinks {
+    flex-direction: column;
+    gap: 32px;
+  }
+
+  .cartIconContainer {
+    margin: 0;
+    width: 45px;
+    height: 45px;
+  }
+}
