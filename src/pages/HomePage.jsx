@@ -1,222 +1,167 @@
-import React, { useContext } from "react";
+import React from "react";
 import styled from "styled-components";
 import Header from "../components/Header/Header.jsx";
 import Footer from "../components/Footer/Footer.jsx";
 import Button from "../components/Button/Button.jsx";
-import { AppContext } from "../App.jsx";
 
 import bgShape from "../assets/background/BG_Shape.png";
-import heroImage from "../assets/background/home.png";
-import trustpilotImage from "../assets/background/trustpilot.svg";
+import foodImage from "../assets/background/home.png";
+import trustpilotIcon from "../assets/background/trustpilot.svg";
 
 function HomePage() {
-  const { navigateTo } = useContext(AppContext);
-
-  const handleExploreMenu = () => {
-    navigateTo("menu");
-  };
-
   return (
-    <HomeContainer>
+    <PageContainer>
       <Header />
-      <HeroSection>
-        <HeroBanner>
-          <HeroLeftSide>
-            <MainTitle>
-              <TitleLine>Beautiful food</TitleLine>
-              <TitleLine>& takeaway,</TitleLine>
-              <TitleLine>
-                <HighlightText>delivered</HighlightText> to your door.
-              </TitleLine>
-            </MainTitle>
-            <SubtitleText>
-              Lorem Ipsum is simply dummy text of the printing and typesetting
-              industry. Lorem Ipsum has been the industry&#39;s standard dummy
-              text ever since the 1500.
-            </SubtitleText>
-            <ActionArea>
-              <Button onClick={handleExploreMenu} disabled={true}>
-                Place an Order
-              </Button>
-            </ActionArea>
-            <RatingArea>
-              <ReviewLogo src={trustpilotImage} alt="Review Platform Logo" />
-              <ReviewStats>
-                <StarRating>
-                  <Star filled />
-                  <Star filled />
-                  <Star filled />
-                  <Star filled />
-                  <Star filled={false} halfFilled />
-                </StarRating>
-                <RatingText>from over 2000+ reviews</RatingText>
-              </ReviewStats>
-            </RatingArea>
-          </HeroLeftSide>
-          <HeroRightSide>
-            <FoodImage src={heroImage} alt="Delicious Food" />
-          </HeroRightSide>
-        </HeroBanner>
-      </HeroSection>
+      <MainContent>
+        <HeroSection>
+          <HeroWrapper>
+            <ContentBlock>
+              <MainTitle>
+                <TitleText>
+                  Beautiful food &amp; takeaway,{" "}
+                  <AccentedText>delivered</AccentedText> to your door.
+                </TitleText>
+              </MainTitle>
+              <SubtitleText>
+                Lorem Ipsum is simply dummy text of the printing and typesetting
+                industry. Lorem Ipsum has been the industry&#39;s standard dummy
+                text ever since the 1500.
+              </SubtitleText>
+              <ActionArea>
+                <Button onClick={() => console.log("Order Placed!")}>
+                  Place an Order
+                </Button>
+              </ActionArea>
+              <TrustpilotArea>
+                <BrandLogo src={trustpilotIcon} alt="Trustpilot Logo" />
+                <ReviewInfo>
+                  <RatingValue>4.8 out of 5</RatingValue> based on 2000+ reviews
+                </ReviewInfo>
+              </TrustpilotArea>
+            </ContentBlock>
+            <ImageArea>
+              <FoodHeroImage src={foodImage} alt="Food and Takeaway" />
+            </ImageArea>
+          </HeroWrapper>
+        </HeroSection>
+      </MainContent>
       <Footer />
-    </HomeContainer>
+    </PageContainer>
   );
 }
 
-const HomeContainer = styled.div`
+export default HomePage;
+
+const PageContainer = styled.div`
+  height: 50vh;
   display: flex;
   flex-direction: column;
-  min-height: 100vh;
+  box-sizing: border-box;
 `;
 
-const HeroSection = styled.main`
-  flex-grow: 1;
-  background-image: url(${bgShape});
+const MainContent = styled.main`
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+`;
+
+const HeroSection = styled.section`
+  background: url(${bgShape}) no-repeat;
   background-size: cover;
   background-position: center;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 60px 20px;
-`;
-
-const HeroBanner = styled.div`
-  display: flex;
-  max-width: 1200px;
-  width: 100%;
-  align-items: center;
-  justify-content: space-between;
-
-  @media (max-width: 800px) {
-    flex-direction: column;
-  }
-`;
-
-const HeroLeftSide = styled.div`
+  display: grid;
+  place-items: center;
+  text-align: left;
+  padding: 70px 20px;
   flex: 1;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  padding: 20px;
-  max-width: 550px;
-  width: 100%;
 `;
 
-const MainTitle = styled.h1`
-  font-family: Inter, sans-serif;
-  font-size: 60px;
-  font-style: normal;
-  font-weight: 400;
-  line-height: 1.2;
-  letter-spacing: 1.8px;
-  margin-bottom: 1.5rem;
-  color: #08090a;
+const HeroWrapper = styled.div`
+  display: flex;
   width: 100%;
-  padding-right: 20px;
-  display: block;
-  white-space: pre-wrap;
-  word-break: normal;
-  word-wrap: normal;
+  max-width: 1200px;
+  align-items: center;
 
-  @media (max-width: 800px) {
-    font-size: 40px;
-    line-height: 1.2;
-    letter-spacing: 1.2px;
+  @media (max-width: 700px) {
+    flex-flow: column nowrap;
   }
 `;
 
-const TitleLine = styled.div`
-  display: block;
-`;
-
-const HighlightText = styled.span`
-  color: #35b8be;
-`;
-
-const SubtitleText = styled.p`
-  color: #546285;
-  font-size: 17.6px;
-  line-height: 24px;
-  margin-bottom: 32px;
-  width: 100%;
-  max-width: 550px;
-`;
-
-const ActionArea = styled.div`
-  margin-bottom: 32px;
-  display: inline-block;
-`;
-
-const RatingArea = styled.div`
-  display: flex;
+const ContentBlock = styled.div`
+  padding-right: 20px;
+  justify-content: center;
   flex-direction: column;
-  align-items: start;
-`;
-
-const ReviewLogo = styled.img`
-  width: 100px;
-  height: auto;
-  margin-inline-end: 16px;
-  margin-block-end: 10px;
-`;
-
-const ReviewStats = styled.div`
-  display: inline-flex;
-  font-size: 16px;
-`;
-
-const StarRating = styled.div`
   display: flex;
-  align-items: center;
-  margin-right: 8px;
+  flex: 1;
 `;
 
-const Star = styled.div`
-  width: 20px;
-  height: 20px;
-  background-color: ${({ filled, halfFilled }) =>
-    filled ? "#FFD700" : halfFilled ? "#FFD70080" : "#E0E0E0"};
-  clip-path: polygon(
-    50% 0%,
-    61% 35%,
-    98% 35%,
-    68% 57%,
-    79% 91%,
-    50% 70%,
-    21% 91%,
-    32% 57%,
-    2% 35%,
-    39% 35%
-  );
-  margin-right: 4px;
-`;
-
-const RatingText = styled.span`
-  color: #546285;
-`;
-
-const ScoreText = styled.span`
-  color: #35b8be;
-  padding-right: 8px;
-`;
-
-const HeroRightSide = styled.div`
-  flex: 1 1 auto;
-  display: flex;
-  justify-content: flex-end;
-  align-items: center;
+const ImageArea = styled.div`
   padding: 32px;
+  justify-content: flex-end;
+  display: flex;
+  flex: 1;
 
   @media (max-width: 800px) {
     display: none;
   }
 `;
 
-const FoodImage = styled.img`
-  width: 100%;
-  height: auto;
-  object-fit: contain;
-  max-height: 500px;
+const MainTitle = styled.h1`
+  margin-bottom: 16px;
+  line-height: 64px;
+  font-weight: normal;
+  font-size: 64px;
+
+  @media (max-width: 800px) {
+    line-height: 48px;
+    font-size: 40px;
+  }
 `;
 
-export default HomePage;
+const TitleText = styled.span`
+  color: #08090a;
+`;
+
+const AccentedText = styled.span`
+  color: #35b8be;
+`;
+
+const SubtitleText = styled.p`
+  max-width: 600px;
+  margin-bottom: 32px;
+  line-height: 24px;
+  font-size: 20px;
+  color: #546285;
+`;
+
+const ActionArea = styled.div`
+  margin-bottom: 30px;
+`;
+
+const TrustpilotArea = styled.div`
+  align-items: flex-start;
+  flex-direction: column;
+  display: flex;
+`;
+
+const BrandLogo = styled.img`
+  margin-bottom: 10px;
+  height: auto;
+  width: 100px;
+`;
+
+const ReviewInfo = styled.div`
+  font-size: 16px;
+  display: flex;
+`;
+
+const RatingValue = styled.span`
+  margin-right: 10px;
+  color: #35b8be;
+`;
+
+const FoodHeroImage = styled.img`
+  object-fit: contain;
+  height: auto;
+  width: 100%;
+`;

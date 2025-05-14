@@ -2,11 +2,13 @@ import "./App.css";
 import { createContext, useState } from "react";
 import MenuPage from "./pages/MenuPage.jsx";
 import HomePage from "./pages/HomePage.jsx";
+import LoginPage from "./pages/LoginPage.jsx";
 import ApiService from "./services/ApiService.js";
+import { AuthProvider, useAuth } from "./services/AuthContext.jsx";
 
 export const AppContext = createContext(null);
 
-function App() {
+function AppContent() {
   const [appSettings, setAppSettings] = useState({
     theme: "light",
     language: "en",
@@ -17,6 +19,8 @@ function App() {
   const [orderSubmitted, setOrderSubmitted] = useState(false);
   const [orderError, setOrderError] = useState(null);
   const [currentPage, setCurrentPage] = useState("home");
+
+  const { currentUser, logout } = useAuth();
 
   const toggleTheme = () => {
     setAppSettings((prevSettings) => ({
@@ -84,7 +88,7 @@ function App() {
         items: cart,
         total: calculateTotal(),
         customer: {
-          name: "Customer",
+          name: currentUser ? currentUser.name : "Customer",
           phone: "+7999999999",
           address: "Address",
         },
@@ -112,6 +116,11 @@ function App() {
     setCurrentPage(page);
   };
 
+  const handleLogout = () => {
+    logout();
+    navigateTo("home");
+  };
+
   const contextValue = {
     settings: appSettings,
     toggleTheme,
@@ -129,12 +138,16 @@ function App() {
     submitOrder,
     currentPage,
     navigateTo,
+    currentUser,
+    logout: handleLogout,
   };
 
   const renderPage = () => {
     switch (currentPage) {
       case "menu":
         return <MenuPage />;
+      case "login":
+        return <LoginPage />;
       case "home":
       default:
         return <HomePage />;
@@ -145,6 +158,14 @@ function App() {
     <AppContext.Provider value={contextValue}>
       <div className={`App ${appSettings.theme}-theme`}>{renderPage()}</div>
     </AppContext.Provider>
+  );
+}
+
+function App() {
+  return (
+    <AuthProvider>
+      <AppContent />
+    </AuthProvider>
   );
 }
 

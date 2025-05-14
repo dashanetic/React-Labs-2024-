@@ -8,7 +8,8 @@ import { AppContext } from "../../App.jsx";
 function Header() {
   const [menuExpanded, setMenuExpanded] = useState(false);
   const [cartItemCount, setCartItemCount] = useState(0);
-  const { currentPage, navigateTo } = useContext(AppContext);
+  const { currentPage, navigateTo, currentUser, logout } =
+    useContext(AppContext);
 
   const incrementCartCount = (quantity = 1) => {
     setCartItemCount((prevCount) => prevCount + quantity);
@@ -18,13 +19,18 @@ function Header() {
     setMenuExpanded((prevState) => !prevState);
   };
 
+  const handleLogout = () => {
+    logout();
+  };
+
   const createNavigationLinks = () => {
     return navItems.map((navLink, itemIndex) => (
       <span
         key={`nav-item-${itemIndex}`}
         className={`${styles.navItem} ${
           (navLink.label === "Home" && currentPage === "home") ||
-          (navLink.label === "Menu" && currentPage === "menu")
+          (navLink.label === "Menu" && currentPage === "menu") ||
+          (navLink.label === "Login" && currentPage === "login")
             ? styles.activeNavItem
             : ""
         }`}
@@ -33,6 +39,8 @@ function Header() {
             navigateTo("home");
           } else if (navLink.label === "Menu") {
             navigateTo("menu");
+          } else if (navLink.label === "Login") {
+            navigateTo("login");
           }
           setMenuExpanded(false); // Закрываем мобильное меню при клике
         }}
@@ -90,6 +98,20 @@ function Header() {
         </button>
 
         <div className={styles.navLinks}>{createNavigationLinks()}</div>
+
+        {/* User Profile Section */}
+        {currentUser && (
+          <div className={styles.userContainer}>
+            <span className={styles.userName}>{currentUser.name}</span>
+            <button
+              className={styles.logoutButton}
+              onClick={handleLogout}
+              aria-label="Logout"
+            >
+              Выйти
+            </button>
+          </div>
+        )}
 
         <div className={styles.cartIconContainer}>
           <img

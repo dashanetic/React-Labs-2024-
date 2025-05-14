@@ -55,7 +55,7 @@ function Card(props) {
         aria-label="Quantity"
         onChange={handleItemQuantity}
       />
-      <Button onClick={handleAddToCart}>Add to card</Button>
+      <Button onClick={handleAddToCart}>Add to cart</Button>
     </footer>
   );
 
