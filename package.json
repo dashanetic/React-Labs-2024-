@@ -7,13 +7,14 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "vite build",
-    "lint": "eslint src --fix",
+    "build": "tsc && vite build",
+    "lint": "eslint '{src,}/**/*.{js,jsx,ts,tsx}' --fix",
     "preview": "vite preview",
-    "prepare": "husky"
+    "prepare": "husky",
+    "typecheck": "tsc --noEmit"
   },
   "lint-staged": {
-    "*.{js,jsx}": "npm run lint"
+    "*.{js,jsx,ts,tsx}": "eslint --fix"
   },
   "dependencies": {
     "normalize.css": "^8.0.1",
@@ -25,8 +26,11 @@
     "@babel/eslint-parser": "^7.26.5",
     "@babel/preset-react": "^7.26.3",
     "@eslint/js": "^9.19.0",
-    "@types/react": "^18.3.10",
+    "@types/node": "^22.15.18",
+    "@types/react": "^18.3.21",
     "@types/react-dom": "^18.3.0",
+    "@typescript-eslint/eslint-plugin": "^8.32.1",
+    "@typescript-eslint/parser": "^8.32.1",
     "@vitejs/plugin-react": "^4.3.2",
     "eslint": "^9.19.0",
     "eslint-config-eslint": "^11.0.0",
@@ -39,6 +43,7 @@
     "globals": "^15.14.0",
     "husky": "^9.1.7",
     "lint-staged": "^15.4.3",
+    "typescript": "^5.8.3",
     "vite": "^5.4.8"
   }
 }

@@ -1,15 +1,24 @@
-import { useState, useEffect, useMemo, useCallback } from "react";
-import Button from "../Button/Button.jsx";
-import CardList from "../CardList/CardList.jsx";
-import { useMeals } from "../../services/ApiHookService.js";
+import React, { useState, useEffect, useMemo, useCallback } from "react";
+import Button from "../Button/Button";
+import CardList from "../CardList/CardList";
+import { useMeals } from "../../services/ApiHookService";
 import styles from "./Menu.module.css";
+import { Meal, ApiMealResponse } from "../../services/ApiService";
 
 import burgerClassic from "../../assets/images/Burger_Classic.png";
 import burgerDreams from "../../assets/images/Burger_Dreams.png";
 
-function Menu() {
-  const fallbackImages = [burgerClassic, burgerDreams];
-  const inactiveCategories = [];
+interface ProcessedMeal extends Meal {
+  name: string;
+  description: string;
+  image: string;
+  category: string;
+}
+
+const Menu: React.FC = () => {
+  // Используем useMemo для создания массива fallbackImages, чтобы избежать пересоздания на каждом рендере
+  const fallbackImages = useMemo(() => [burgerClassic, burgerDreams], []);
+  const inactiveCategories: string[] = [];
 
   const {
     meals: mealsData,
@@ -18,18 +27,18 @@ function Menu() {
     refreshMeals,
   } = useMeals();
 
-  const [menuItems, setMenuItems] = useState([]);
-  const [selectedCategory, setSelectedCategory] = useState(null);
-  const [error, setError] = useState(null);
-  const [displayLimit, setDisplayLimit] = useState(6);
-  const [uniqueCategories, setUniqueCategories] = useState([]);
+  const [menuItems, setMenuItems] = useState<ProcessedMeal[]>([]);
+  const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
+  const [error, setError] = useState<string | null>(null);
+  const [displayLimit, setDisplayLimit] = useState<number>(6);
+  const [uniqueCategories, setUniqueCategories] = useState<string[]>([]);
 
-  const switchCategory = useCallback((category) => {
+  const switchCategory = useCallback((category: string): void => {
     setSelectedCategory(category);
     setDisplayLimit(6);
   }, []);
 
-  const loadMoreItems = useCallback(() => {
+  const loadMoreItems = useCallback((): void => {
     setDisplayLimit((prev) => prev + 6);
   }, []);
 
@@ -41,17 +50,21 @@ function Menu() {
 
     if (!mealsData) return;
 
-    const processedData = mealsData.map((meal, index) => ({
-      ...meal,
-      name: meal.meal || `Dish ${index + 1}`,
-      description: meal.instructions || "No description available",
-      image: meal.img || fallbackImages[index % fallbackImages.length],
-      category: meal.category || "Other",
-    }));
+    // Корректно типизированные данные, используем ApiMealResponse
+    const processedData: ProcessedMeal[] = mealsData.map((meal, index) => {
+      const apiMeal = meal as unknown as ApiMealResponse;
+      return {
+        ...meal,
+        name: apiMeal.meal || `Dish ${index + 1}`,
+        description: apiMeal.instructions || "No description available",
+        image: apiMeal.img || fallbackImages[index % fallbackImages.length],
+        category: apiMeal.category || "Other",
+      };
+    });
 
     setMenuItems(processedData);
 
-    const categories = [
+    const categories: string[] = [
       ...new Set(
         processedData
           .filter((dish) => dish.category)
@@ -68,12 +81,12 @@ function Menu() {
     }
   }, [uniqueCategories, selectedCategory]);
 
-  const filteredDishes = useMemo(() => {
+  const filteredDishes = useMemo((): ProcessedMeal[] => {
     if (!selectedCategory) return [];
     return menuItems.filter((dish) => dish.category === selectedCategory);
   }, [menuItems, selectedCategory]);
 
-  const dishesToDisplay = useMemo(() => {
+  const dishesToDisplay = useMemo((): ProcessedMeal[] => {
     return filteredDishes.slice(0, displayLimit);
   }, [filteredDishes, displayLimit]);
 
@@ -140,6 +153,6 @@ function Menu() {
       {hasMoreDishes && <Button onClick={loadMoreItems}>See more</Button>}
     </section>
   );
-}
+};
 
 export default Menu;
