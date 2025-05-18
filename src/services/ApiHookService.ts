@@ -1,11 +1,11 @@
 import useFetch from "../hooks/useFetch";
-import { Meal, Order, CreateOrderData } from "./ApiService";
-
-const BASE_URL = "https://65de35f3dccfcd562f5691bb.mockapi.io/api/v1";
-
-interface RawMeal extends Omit<Meal, 'price'> {
-  price: string; // Цена приходит как строка из API
-}
+import {
+  BASE_URL,
+  Meal,
+  Order,
+  RawMeal,
+  CreateOrderData,
+} from "../types/api/types";
 
 interface UseMealsResult {
   meals: Meal[] | null;
@@ -33,7 +33,9 @@ interface UseCreateOrderResult {
 }
 
 export const useMeals = (): UseMealsResult => {
-  const { data, loading, error, fetchData } = useFetch<RawMeal[]>(`${BASE_URL}/meals`);
+  const { data, loading, error, fetchData } = useFetch<RawMeal[]>(
+    `${BASE_URL}/meals`
+  );
 
   let processedData: Meal[] | null = null;
   if (data) {
@@ -57,7 +59,9 @@ export const useMeals = (): UseMealsResult => {
 };
 
 export const useOrders = (): UseOrdersResult => {
-  const { data, loading, error, fetchData } = useFetch<Order[]>(`${BASE_URL}/orders`);
+  const { data, loading, error, fetchData } = useFetch<Order[]>(
+    `${BASE_URL}/orders`
+  );
 
   return {
     orders: data,
@@ -71,7 +75,7 @@ export const useOrder = (orderId?: string): UseOrderResult => {
   const { data, loading, error, fetchData } = useFetch<Order>(
     `${BASE_URL}/orders/${orderId}`,
     {},
-    orderId !== undefined 
+    orderId !== undefined
   );
 
   return {
@@ -91,7 +95,7 @@ export const useCreateOrder = (): UseCreateOrderResult => {
         "Content-Type": "application/json",
       },
     },
-    false 
+    false
   );
 
   const createOrder = async (orderData: CreateOrderData): Promise<Order> => {

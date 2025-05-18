@@ -1,4 +1,4 @@
-import React, { createContext, useState, useContext } from "react";
+import React, { createContext, useState, useContext, useCallback } from "react";
 import { Meal } from "../types/api/types";
 import { useCreateOrder } from "./ApiHookService";
 
@@ -62,13 +62,13 @@ export const CartProvider: React.FC<CartProviderProps> = ({
   // Используем хук для создания заказа
   const { createOrder } = useCreateOrder();
 
-  // Показать/скрыть корзину
-  const toggleCart = (): void => {
+  // Показать/скрыть корзину - оптимизация с useCallback
+  const toggleCart = useCallback((): void => {
     setIsCartOpen((prevState) => !prevState);
-  };
+  }, []);
 
-  // Добавить товар в корзину
-  const addToCart = (item: Meal, quantity: number = 1): void => {
+  // Добавить товар в корзину - оптимизация с useCallback
+  const addToCart = useCallback((item: Meal, quantity: number = 1): void => {
     setCart((prevCart) => {
       const existingItemIndex = prevCart.findIndex(
         (cartItem) => cartItem.id === item.id
@@ -85,80 +85,87 @@ export const CartProvider: React.FC<CartProviderProps> = ({
         return [...prevCart, { ...item, quantity }];
       }
     });
-  };
+  }, []);
 
-  // Обновить количество товара в корзине
-  const updateCartItemQuantity = (
-    itemId: string,
-    newQuantity: number
-  ): void => {
-    if (newQuantity <= 0) {
-      removeFromCart(itemId);
-      return;
-    }
+  // Обновить количество товара в корзине - оптимизация с useCallback
+  const updateCartItemQuantity = useCallback(
+    (itemId: string, newQuantity: number): void => {
+      if (newQuantity <= 0) {
+        // Используем функциональное обновление состояния вместо вызова removeFromCart
+        setCart((prevCart) => prevCart.filter((item) => item.id !== itemId));
+        return;
+      }
 
-    setCart((prevCart) =>
-      prevCart.map((item) =>
-        item.id === itemId ? { ...item, quantity: newQuantity } : item
-      )
-    );
-  };
+      setCart((prevCart) =>
+        prevCart.map((item) =>
+          item.id === itemId ? { ...item, quantity: newQuantity } : item
+        )
+      );
+    },
+    []
+  );
 
-  // Удалить товар из корзины
-  const removeFromCart = (itemId: string): void => {
+  // Удалить товар из корзины - оптимизация с useCallback
+  const removeFromCart = useCallback((itemId: string): void => {
     setCart((prevCart) => prevCart.filter((item) => item.id !== itemId));
-  };
+  }, []);
 
-  // Очистить корзину
-  const clearCart = (): void => {
+  // Очистить корзину - оптимизация с useCallback
+  const clearCart = useCallback((): void => {
     setCart([]);
-  };
+  }, []);
 
-  // Рассчитать общую стоимость заказа
-  const calculateTotal = (): number => {
+  // Рассчитать общую стоимость заказа - оптимизация с useCallback
+  const calculateTotal = useCallback((): number => {
     return cart.reduce((total, item) => total + item.price * item.quantity, 0);
-  };
+  }, [cart]);
 
-  // Отправить заказ
-  const submitOrder = async (customerData?: {
-    name: string;
-    email: string;
-    phone: string;
-    address: string;
-  }): Promise<void> => {
-    if (cart.length === 0) return;
+  // Отправить заказ - оптимизация с useCallback
+  const submitOrder = useCallback(
+    async (customerData?: {
+      name: string;
+      email: string;
+      phone: string;
+      address: string;
+    }): Promise<void> => {
+      if (cart.length === 0) return;
 
-    setIsSubmittingOrder(true);
-    setOrderError(null);
+      setIsSubmittingOrder(true);
+      setOrderError(null);
 
-    try {
-      const orderData = {
-        items: cart.map((item) => ({
-          mealId: item.id,
-          quantity: item.quantity,
-        })),
-        totalPrice: calculateTotal(),
-        customerName: customerData?.name || currentUserName,
-        customerEmail: customerData?.email || currentUserEmail,
-        customerPhone: customerData?.phone || "+7999999999",
-        deliveryAddress: customerData?.address || "Address",
-      };
+      try {
+        const orderData = {
+          items: cart.map((item) => ({
+            mealId: item.id,
+            quantity: item.quantity,
+          })),
+          totalPrice: cart.reduce(
+            (total, item) => total + item.price * item.quantity,
+            0
+          ),
+          customerName: customerData?.name || currentUserName,
+          customerEmail: customerData?.email || currentUserEmail,
+          customerPhone: customerData?.phone || "+7999999999",
+          deliveryAddress: customerData?.address || "Address",
+        };
 
-      await createOrder(orderData);
+        await createOrder(orderData);
 
-      setIsSubmittingOrder(false);
-      setOrderSubmitted(true);
-      setCart([]);
+        setIsSubmittingOrder(false);
+        setOrderSubmitted(true);
+        setCart([]);
 
-      setTimeout(() => {
-        setOrderSubmitted(false);
-      }, 3000);
-    } catch (error) {
-      console.error("Failed to submit order:", error);
-      setIsSubmittingOrder(false);
-      setOrderError("Failed to submit your order. Please try again.");
-    }
-  };
+        setTimeout(() => {
+          setOrderSubmitted(false);
+        }, 3000);
+      } catch (error) {
+        console.error("Failed to submit order:", error);
+        setIsSubmittingOrder(false);
+        setOrderError("Failed to submit your order. Please try again.");
+      }
+    },
+    [cart, createOrder, currentUserName, currentUserEmail]
+  );
 
   // Значение контекста
   const value: CartContextType = {

@@ -1,7 +1,7 @@
 import React from "react";
 import Card from "../Card/Card";
 import styles from "./CardList.module.css";
-import { Meal } from "../../services/ApiService";
+import { Meal } from "../../types/api/types";
 
 interface CardListProps {
   cards: Meal[];
@@ -13,10 +13,12 @@ const CardList: React.FC<CardListProps> = ({ cards = [] }) => {
     return cards.map((menuItem, index) => (
       <Card
         key={`${menuItem.name}-${index}`}
+        id={menuItem.id}
         name={menuItem.name}
         price={menuItem.price}
         description={menuItem.description}
         image={menuItem.image}
+        category={menuItem.category}
       />
     ));
   };

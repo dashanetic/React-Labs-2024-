@@ -3,7 +3,7 @@ import Button from "../Button/Button";
 import CardList from "../CardList/CardList";
 import { useMeals } from "../../services/ApiHookService";
 import styles from "./Menu.module.css";
-import { Meal, ApiMealResponse } from "../../services/ApiService";
+import { Meal, ApiMealResponse } from "../../types/api/types";
 
 import burgerClassic from "../../assets/images/Burger_Classic.png";
 import burgerDreams from "../../assets/images/Burger_Dreams.png";

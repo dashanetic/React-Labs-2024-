@@ -1,26 +1,22 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useContext } from "react";
 import { navItems } from "../../data/headerData";
 import companyLogo from "../../assets/icons/logo.svg";
 import cartIcon from "../../assets/icons/cart.svg";
 import styles from "./Header.module.css";
 import { AppContext } from "../../App";
 import { AppContextType } from "../../types/appContext";
-
-// Расширяем глобальный Window интерфейс для поддержки incrementCartCount
-declare global {
-  interface Window {
-    incrementCartCount?: (quantity: number) => void;
-  }
-}
+import { useCart } from "../../services/CartContext";
 
 const Header: React.FC = () => {
   const [menuExpanded, setMenuExpanded] = useState<boolean>(false);
-  const [cartItemCount, setCartItemCount] = useState<number>(0);
-  const { currentPage, navigateTo, currentUser, logout } = useContext<AppContextType>(AppContext);
+  const { currentPage, navigateTo, currentUser, logout } =
+    useContext<AppContextType>(AppContext);
 
-  const incrementCartCount = (quantity: number = 1): void => {
-    setCartItemCount((prevCount) => prevCount + quantity);
-  };
+  // Используем хук useCart для доступа к данным и функциям корзины
+  const { cart, toggleCart } = useCart();
+
+  // Вычисляем общее количество товаров в корзине
+  const cartItemCount = cart.reduce((total, item) => total + item.quantity, 0);
 
   const handleMenuToggle = (): void => {
     setMenuExpanded((prevState) => !prevState);
@@ -57,14 +53,6 @@ const Header: React.FC = () => {
       </span>
     ));
   };
-
-  useEffect(() => {
-    window.incrementCartCount = incrementCartCount;
-
-    return () => {
-      delete window.incrementCartCount;
-    };
-  }, []);
 
   return (
     <header className={styles.appHeader}>
@@ -120,7 +108,11 @@ const Header: React.FC = () => {
           </div>
         )}
 
-        <div className={styles.cartIconContainer}>
+        <div
+          className={styles.cartIconContainer}
+          onClick={toggleCart} // Добавляем обработчик для открытия корзины
+          style={{ cursor: "pointer" }}
+        >
           <img
             src={cartIcon}
             alt="Shopping Cart"
