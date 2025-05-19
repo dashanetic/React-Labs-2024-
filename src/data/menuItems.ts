@@ -5,10 +5,8 @@ import burgerWaldo from "../assets/images/Burger_Waldo.png";
 import burgerCali from "../assets/images/Burger_Cali.png";
 import burgerBaconBuddy from "../assets/images/Burger_Bacon_Buddy.png";
 
-// Определяем тип для категорий меню
-export type MenuCategory = 'Breakfast' | 'Lunch' | 'Dinner' | 'Dessert';
+export type MenuCategory = "Breakfast" | "Lunch" | "Dinner" | "Dessert";
 
-// Определяем интерфейс для элементов меню
 export interface MenuItem {
   id: number;
   name: string;

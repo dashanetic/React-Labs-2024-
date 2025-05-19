@@ -16,9 +16,8 @@ interface ProcessedMeal extends Meal {
 }
 
 const Menu: React.FC = () => {
-  // Используем useMemo для создания массива fallbackImages, чтобы избежать пересоздания на каждом рендере
   const fallbackImages = useMemo(() => [burgerClassic, burgerDreams], []);
-  const inactiveCategories: string[] = [];
+  const inactiveCategories: string[] = useMemo(() => [], []);
 
   const {
     meals: mealsData,
@@ -50,7 +49,6 @@ const Menu: React.FC = () => {
 
     if (!mealsData) return;
 
-    // Корректно типизированные данные, используем ApiMealResponse
     const processedData: ProcessedMeal[] = mealsData.map((meal, index) => {
       const apiMeal = meal as unknown as ApiMealResponse;
       return {
@@ -73,13 +71,14 @@ const Menu: React.FC = () => {
     ];
 
     setUniqueCategories(categories);
-  }, [mealsData, fetchError, fallbackImages]);
 
-  useEffect(() => {
-    if (uniqueCategories.length > 0 && !selectedCategory) {
-      setSelectedCategory(uniqueCategories[0]);
+    if (
+      categories.length > 0 &&
+      (!selectedCategory || !categories.includes(selectedCategory))
+    ) {
+      setSelectedCategory(categories[0]);
     }
-  }, [uniqueCategories, selectedCategory]);
+  }, [mealsData, fetchError, fallbackImages, selectedCategory]);
 
   const filteredDishes = useMemo((): ProcessedMeal[] => {
     if (!selectedCategory) return [];

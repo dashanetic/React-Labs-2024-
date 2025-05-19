@@ -1,18 +1,20 @@
 import { useState, useCallback, useEffect, useRef } from "react";
 
-interface FetchOptions extends RequestInit {
-  // Расширяем стандартный тип RequestInit для наших опций
-}
+interface FetchOptions extends RequestInit {}
 
 interface UseFetchResult<T> {
   data: T | null;
   loading: boolean;
   error: string | null;
-  fetchData: (customOptions?: Partial<FetchOptions>) => Promise<T>;
+  fetchData: (customOptions?: Partial<FetchOptions>) => Promise<T | null>;
   requestCount: number;
 }
 
-const useFetch = <T>(url: string, options: FetchOptions = {}, immediate: boolean = true): UseFetchResult<T> => {
+const useFetch = <T>(
+  url: string,
+  options: FetchOptions = {},
+  immediate: boolean = true
+): UseFetchResult<T> => {
   const [data, setData] = useState<T | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
@@ -20,6 +22,7 @@ const useFetch = <T>(url: string, options: FetchOptions = {}, immediate: boolean
 
   const prevUrlRef = useRef<string>(url);
   const optionsRef = useRef<FetchOptions>(options);
+  const abortControllerRef = useRef<AbortController | null>(null);
 
   useEffect(() => {
     if (JSON.stringify(options) !== JSON.stringify(optionsRef.current)) {
@@ -28,8 +31,18 @@ const useFetch = <T>(url: string, options: FetchOptions = {}, immediate: boolean
   }, [options]);
 
   const fetchData = useCallback(
-    async (customOptions: Partial<FetchOptions> = {}): Promise<T> => {
-      const mergedOptions = { ...optionsRef.current, ...customOptions };
+    async (customOptions: Partial<FetchOptions> = {}): Promise<T | null> => {
+      if (abortControllerRef.current) {
+        abortControllerRef.current.abort();
+      }
+
+      abortControllerRef.current = new AbortController();
+
+      const mergedOptions = {
+        ...optionsRef.current,
+        ...customOptions,
+        signal: abortControllerRef.current.signal,
+      };
 
       setLoading(true);
       setError(null);
@@ -40,9 +53,9 @@ const useFetch = <T>(url: string, options: FetchOptions = {}, immediate: boolean
         let responseData: T;
         const contentType = response.headers.get("content-type");
         if (contentType && contentType.includes("application/json")) {
-          responseData = await response.json() as T;
+          responseData = (await response.json()) as T;
         } else {
-          responseData = await response.text() as unknown as T;
+          responseData = (await response.text()) as unknown as T;
         }
 
         if (!response.ok) {
@@ -53,7 +66,13 @@ const useFetch = <T>(url: string, options: FetchOptions = {}, immediate: boolean
         setRequestCount((prev) => prev + 1);
         return responseData;
       } catch (err) {
-        const errorMessage = err instanceof Error ? err.message : "An error occurred during fetch";
+        if ((err as Error).name === "AbortError") {
+          console.log("Request was cancelled");
+          return null;
+        }
+
+        const errorMessage =
+          err instanceof Error ? err.message : "An error occurred during fetch";
         setError(errorMessage);
         throw err;
       } finally {
@@ -64,10 +83,23 @@ const useFetch = <T>(url: string, options: FetchOptions = {}, immediate: boolean
   );
 
   useEffect(() => {
+    let isActive = true;
+
     if (immediate && (url !== prevUrlRef.current || requestCount === 0)) {
-      fetchData();
+      fetchData().catch((err) => {
+        if (err?.name !== "AbortError" && isActive) {
+          console.error("Fetch error:", err);
+        }
+      });
       prevUrlRef.current = url;
     }
+
+    return () => {
+      isActive = false;
+      if (abortControllerRef.current) {
+        abortControllerRef.current.abort();
+      }
+    };
   }, [immediate, url, fetchData, requestCount]);
 
   return { data, loading, error, fetchData, requestCount };

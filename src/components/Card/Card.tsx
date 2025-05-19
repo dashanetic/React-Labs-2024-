@@ -10,8 +10,8 @@ interface CardProps {
   description: string;
   image: string;
   price: number;
-  id: string; // Добавляем id для возможности работы с корзиной
-  category: string; // Добавляем category, необходимую для интерфейса Meal
+  id: string;
+  category: string;
 }
 
 const Card: React.FC<CardProps> = (props) => {
@@ -23,10 +23,8 @@ const Card: React.FC<CardProps> = (props) => {
   const { name, description, image, price, id, category } = props;
   const fallbackImage = burgerClassic;
 
-  // Используем хук useCart для доступа к функциям корзины
   const { addToCart } = useCart();
 
-  // Оптимизируем функции с помощью useCallback
   const handleItemQuantity = useCallback(
     (evt: React.ChangeEvent<HTMLInputElement>) => {
       const value = parseInt(evt.target.value, 10) || 1;
@@ -48,7 +46,6 @@ const Card: React.FC<CardProps> = (props) => {
   }, []);
 
   const handleAddToCart = useCallback((): void => {
-    // Создаем объект товара соответствующий интерфейсу Meal
     const item: Meal = {
       id,
       name,
@@ -58,12 +55,10 @@ const Card: React.FC<CardProps> = (props) => {
       category,
     };
 
-    // Используем функцию addToCart из контекста корзины
     addToCart(item, quantity);
     console.log(`Added ${quantity} ${name} to cart`);
   }, [id, name, description, image, price, category, quantity, addToCart]);
 
-  // Оптимизируем функции рендеринга с помощью useCallback
   const renderHeader = useCallback((): JSX.Element => {
     return (
       <header className={styles.cardHeader}>
@@ -133,4 +128,4 @@ const Card: React.FC<CardProps> = (props) => {
   );
 };
 
-export default Card;
+export default React.memo(Card);

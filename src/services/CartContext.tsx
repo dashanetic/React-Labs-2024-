@@ -2,7 +2,6 @@ import React, { createContext, useState, useContext, useCallback } from "react";
 import { Meal } from "../types/api/types";
 import { useCreateOrder } from "./ApiHookService";
 
-// Используем интерфейс CartItem из appContext.ts для согласованности
 export interface CartItem extends Meal {
   quantity: number;
 }
@@ -27,10 +26,8 @@ export interface CartContextType {
   }) => Promise<void>;
 }
 
-// Создаем контекст с начальными значениями
 const CartContext = createContext<CartContextType | undefined>(undefined);
 
-// Хук для использования контекста корзины
 export const useCart = (): CartContextType => {
   const context = useContext(CartContext);
   if (!context) {
@@ -39,35 +36,29 @@ export const useCart = (): CartContextType => {
   return context;
 };
 
-// Пропсы для провайдера корзины
 interface CartProviderProps {
   children: React.ReactNode;
   currentUserName?: string;
   currentUserEmail?: string;
 }
 
-// Создаем провайдер контекста корзины
 export const CartProvider: React.FC<CartProviderProps> = ({
   children,
   currentUserName = "Customer",
   currentUserEmail = "customer@example.com",
 }) => {
-  // Состояния корзины
   const [cart, setCart] = useState<CartItem[]>([]);
   const [isCartOpen, setIsCartOpen] = useState<boolean>(false);
   const [isSubmittingOrder, setIsSubmittingOrder] = useState<boolean>(false);
   const [orderSubmitted, setOrderSubmitted] = useState<boolean>(false);
   const [orderError, setOrderError] = useState<string | null>(null);
 
-  // Используем хук для создания заказа
   const { createOrder } = useCreateOrder();
 
-  // Показать/скрыть корзину - оптимизация с useCallback
   const toggleCart = useCallback((): void => {
     setIsCartOpen((prevState) => !prevState);
   }, []);
 
-  // Добавить товар в корзину - оптимизация с useCallback
   const addToCart = useCallback((item: Meal, quantity: number = 1): void => {
     setCart((prevCart) => {
       const existingItemIndex = prevCart.findIndex(
@@ -87,11 +78,9 @@ export const CartProvider: React.FC<CartProviderProps> = ({
     });
   }, []);
 
-  // Обновить количество товара в корзине - оптимизация с useCallback
   const updateCartItemQuantity = useCallback(
     (itemId: string, newQuantity: number): void => {
       if (newQuantity <= 0) {
-        // Используем функциональное обновление состояния вместо вызова removeFromCart
         setCart((prevCart) => prevCart.filter((item) => item.id !== itemId));
         return;
       }
@@ -105,22 +94,18 @@ export const CartProvider: React.FC<CartProviderProps> = ({
     []
   );
 
-  // Удалить товар из корзины - оптимизация с useCallback
   const removeFromCart = useCallback((itemId: string): void => {
     setCart((prevCart) => prevCart.filter((item) => item.id !== itemId));
   }, []);
 
-  // Очистить корзину - оптимизация с useCallback
   const clearCart = useCallback((): void => {
     setCart([]);
   }, []);
 
-  // Рассчитать общую стоимость заказа - оптимизация с useCallback
   const calculateTotal = useCallback((): number => {
     return cart.reduce((total, item) => total + item.price * item.quantity, 0);
   }, [cart]);
 
-  // Отправить заказ - оптимизация с useCallback
   const submitOrder = useCallback(
     async (customerData?: {
       name: string;
@@ -167,7 +152,6 @@ export const CartProvider: React.FC<CartProviderProps> = ({
     [cart, createOrder, currentUserName, currentUserEmail]
   );
 
-  // Значение контекста
   const value: CartContextType = {
     cart,
     isCartOpen,

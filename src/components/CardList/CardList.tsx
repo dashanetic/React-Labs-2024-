@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useMemo } from "react";
 import Card from "../Card/Card";
 import styles from "./CardList.module.css";
 import { Meal } from "../../types/api/types";
@@ -8,11 +8,11 @@ interface CardListProps {
 }
 
 const CardList: React.FC<CardListProps> = ({ cards = [] }) => {
-  // Отрисовка элементов меню
-  const renderMenuItems = (): JSX.Element[] => {
-    return cards.map((menuItem, index) => (
+  // Мемоизация элементов меню для предотвращения ненужных перерендеров
+  const menuItems = useMemo(() => {
+    return cards.map((menuItem) => (
       <Card
-        key={`${menuItem.name}-${index}`}
+        key={menuItem.id || `${menuItem.name}-${menuItem.price}`}
         id={menuItem.id}
         name={menuItem.name}
         price={menuItem.price}
@@ -21,9 +21,10 @@ const CardList: React.FC<CardListProps> = ({ cards = [] }) => {
         category={menuItem.category}
       />
     ));
-  };
+  }, [cards]);
 
-  return <div className={styles.cardList}>{renderMenuItems()}</div>;
+  return <div className={styles.cardList}>{menuItems}</div>;
 };
 
-export default CardList;
+// Оптимизируем весь компонент с помощью React.memo
+export default React.memo(CardList);

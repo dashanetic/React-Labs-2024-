@@ -19,15 +19,13 @@ const Cart: React.FC = () => {
   } = useCart();
 
   if (!isCartOpen) {
-    return null; // Не отображаем корзину, если она закрыта
+    return null;
   }
 
-  // Функция для форматирования цены
   const formatPrice = (price: number): string => {
     return `$${price.toFixed(2)} USD`;
   };
 
-  // Если корзина пуста
   const renderEmptyCart = () => (
     <div className={styles.emptyCart}>
       <p>Your cart is empty</p>
@@ -35,7 +33,6 @@ const Cart: React.FC = () => {
     </div>
   );
 
-  // Если заказ отправлен успешно
   const renderOrderSubmitted = () => (
     <div className={styles.orderSubmitted}>
       <p className={styles.successMessage}>
@@ -45,7 +42,6 @@ const Cart: React.FC = () => {
     </div>
   );
 
-  // Если произошла ошибка при отправке заказа
   const renderOrderError = () => (
     <div className={styles.orderError}>
       <p className={styles.errorMessage}>{orderError}</p>
@@ -54,7 +50,6 @@ const Cart: React.FC = () => {
     </div>
   );
 
-  // Отображение элементов корзины
   const renderCartItems = () => (
     <>
       <div className={styles.cartItems}>

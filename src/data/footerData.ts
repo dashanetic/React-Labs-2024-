@@ -2,7 +2,6 @@ import instagramIcon from "../assets/icons/instagram.svg";
 import twitterIcon from "../assets/icons/twitter.svg";
 import youtubeIcon from "../assets/icons/youtube.svg";
 
-// Типы для навигационных элементов
 interface NavigationItem {
   linkText: string;
   destination: string;
@@ -25,7 +24,7 @@ interface SocialMediaPlatform {
 
 interface SocialMediaDisplayOptions {
   showLabels: boolean;
-  iconSize: 'small' | 'medium' | 'large';
+  iconSize: "small" | "medium" | "large";
   targetBlank: boolean;
 }
 
@@ -46,7 +45,6 @@ interface FooterConfiguration {
   copyrightInfo: CopyrightInfo;
 }
 
-// Форматы для экспорта
 export interface LinkSection {
   title: string;
   links: {

@@ -12,10 +12,8 @@ const Header: React.FC = () => {
   const { currentPage, navigateTo, currentUser, logout } =
     useContext<AppContextType>(AppContext);
 
-  // Используем хук useCart для доступа к данным и функциям корзины
   const { cart, toggleCart } = useCart();
 
-  // Вычисляем общее количество товаров в корзине
   const cartItemCount = cart.reduce((total, item) => total + item.quantity, 0);
 
   const handleMenuToggle = (): void => {
@@ -45,7 +43,7 @@ const Header: React.FC = () => {
           } else if (navLink.label === "Login") {
             navigateTo("login");
           }
-          setMenuExpanded(false); // Закрываем мобильное меню при клике
+          setMenuExpanded(false);
         }}
         style={{ cursor: "pointer" }}
       >
@@ -110,7 +108,7 @@ const Header: React.FC = () => {
 
         <div
           className={styles.cartIconContainer}
-          onClick={toggleCart} // Добавляем обработчик для открытия корзины
+          onClick={toggleCart}
           style={{ cursor: "pointer" }}
         >
           <img

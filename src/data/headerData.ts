@@ -1,4 +1,3 @@
-// Интерфейс для элемента навигации
 interface NavigationItem {
   label: string;
   href: string;
@@ -9,14 +8,12 @@ interface NavigationItem {
   isHighlighted?: boolean;
 }
 
-// Интерфейс для настроек мобильной навигации
 interface MobileSettings {
   breakpoint: number;
-  animation: 'slide' | 'fade' | 'none';
+  animation: "slide" | "fade" | "none";
   closeOnRouteChange: boolean;
 }
 
-// Интерфейс для всей конфигурации навигации
 interface NavigationConfig {
   mainItems: NavigationItem[];
   mobileSettings: MobileSettings;

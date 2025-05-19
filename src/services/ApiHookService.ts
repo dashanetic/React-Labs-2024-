@@ -11,25 +11,25 @@ interface UseMealsResult {
   meals: Meal[] | null;
   loading: boolean;
   error: string | null;
-  refreshMeals: () => Promise<RawMeal[]>;
+  refreshMeals: () => Promise<RawMeal[] | null>;
 }
 
 interface UseOrdersResult {
   orders: Order[] | null;
   loading: boolean;
   error: string | null;
-  refreshOrders: () => Promise<Order[]>;
+  refreshOrders: () => Promise<Order[] | null>;
 }
 
 interface UseOrderResult {
   order: Order | null;
   loading: boolean;
   error: string | null;
-  refreshOrder: () => Promise<Order>;
+  refreshOrder: () => Promise<Order | null>;
 }
 
 interface UseCreateOrderResult {
-  createOrder: (orderData: CreateOrderData) => Promise<Order>;
+  createOrder: (orderData: CreateOrderData) => Promise<Order | null>;
 }
 
 export const useMeals = (): UseMealsResult => {
@@ -98,7 +98,9 @@ export const useCreateOrder = (): UseCreateOrderResult => {
     false
   );
 
-  const createOrder = async (orderData: CreateOrderData): Promise<Order> => {
+  const createOrder = async (
+    orderData: CreateOrderData
+  ): Promise<Order | null> => {
     try {
       return await fetchData({
         body: JSON.stringify(orderData),
