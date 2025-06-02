@@ -1,20 +1,20 @@
-import React, { useState, useContext } from "react";
+import React, { useState } from "react";
 import { navItems } from "../../data/headerData";
 import companyLogo from "../../assets/icons/logo.svg";
 import cartIcon from "../../assets/icons/cart.svg";
 import styles from "./Header.module.css";
-import { AppContext } from "../../App";
-import { AppContextType } from "../../types/appContext";
-import { useCart } from "../../services/CartContext";
+import { useAppContext } from "../../hooks/useAppContext";
+import { useAuth } from "../../hooks/useReduxAuth";
+import { useCart } from "../../hooks/useReduxCart";
+import { selectCartItemsCount } from "../../redux/selectors";
+import { useAppSelector } from "../../redux/hooks";
 
 const Header: React.FC = () => {
   const [menuExpanded, setMenuExpanded] = useState<boolean>(false);
-  const { currentPage, navigateTo, currentUser, logout } =
-    useContext<AppContextType>(AppContext);
-
-  const { cart, toggleCart } = useCart();
-
-  const cartItemCount = cart.reduce((total, item) => total + item.quantity, 0);
+  const { currentPage, navigateTo } = useAppContext();
+  const { currentUser, logout } = useAuth();
+  const { toggleCart } = useCart();
+  const cartItemCount = useAppSelector(selectCartItemsCount);
 
   const handleMenuToggle = (): void => {
     setMenuExpanded((prevState) => !prevState);

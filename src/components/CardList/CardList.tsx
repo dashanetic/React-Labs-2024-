@@ -8,7 +8,6 @@ interface CardListProps {
 }
 
 const CardList: React.FC<CardListProps> = ({ cards = [] }) => {
-  // Мемоизация элементов меню для предотвращения ненужных перерендеров
   const menuItems = useMemo(() => {
     return cards.map((menuItem) => (
       <Card
@@ -26,5 +25,4 @@ const CardList: React.FC<CardListProps> = ({ cards = [] }) => {
   return <div className={styles.cardList}>{menuItems}</div>;
 };
 
-// Оптимизируем весь компонент с помощью React.memo
 export default React.memo(CardList);

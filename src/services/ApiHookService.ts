@@ -45,7 +45,6 @@ export const useMeals = (): UseMealsResult => {
         price: parseFloat(meal.price),
       }));
     } catch {
-      // Если не удалось преобразовать цену, используем данные как есть
       processedData = data as unknown as Meal[];
     }
   }

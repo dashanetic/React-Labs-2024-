@@ -3,7 +3,7 @@ import styled from "styled-components";
 import Button from "../components/Button/Button";
 import Header from "../components/Header/Header";
 import Footer from "../components/Footer/Footer";
-import { useAuth } from "../services/AuthContext";
+import { useAuth } from "../hooks/useReduxAuth";
 
 import bgShape from "../assets/background/BG_Shape.png";
 
@@ -15,7 +15,7 @@ const LoginPage: React.FC = () => {
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [name, setName] = useState<string>("");
-  const [isLogin, setIsLogin] = useState<boolean>(true); // Переключатель между формой входа и регистрации
+  const [isLogin, setIsLogin] = useState<boolean>(true);
   const [error, setError] = useState<string>("");
 
   const { login, register } = useAuth();

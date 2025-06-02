@@ -2,7 +2,7 @@ import React, { useState, useCallback } from "react";
 import Button from "../Button/Button";
 import styles from "./Card.module.css";
 import burgerClassic from "../../assets/images/Burger_Classic.png";
-import { useCart } from "../../services/CartContext";
+import { useCart } from "../../hooks/useReduxCart";
 import { Meal } from "../../types/api/types";
 
 interface CardProps {
@@ -56,7 +56,6 @@ const Card: React.FC<CardProps> = (props) => {
     };
 
     addToCart(item, quantity);
-    console.log(`Added ${quantity} ${name} to cart`);
   }, [id, name, description, image, price, category, quantity, addToCart]);
 
   const renderHeader = useCallback((): JSX.Element => {

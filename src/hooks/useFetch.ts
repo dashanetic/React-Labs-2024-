@@ -67,7 +67,6 @@ const useFetch = <T>(
         return responseData;
       } catch (err) {
         if ((err as Error).name === "AbortError") {
-          console.log("Request was cancelled");
           return null;
         }
 

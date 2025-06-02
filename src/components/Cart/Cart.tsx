@@ -1,6 +1,7 @@
 import React from "react";
 import Button from "../Button/Button";
-import { useCart } from "../../services/CartContext";
+import { useCart } from "../../hooks/useReduxCart";
+import { CartItem } from "../../redux/slices/cartSlice";
 import styles from "./Cart.module.css";
 
 const Cart: React.FC = () => {
@@ -53,7 +54,7 @@ const Cart: React.FC = () => {
   const renderCartItems = () => (
     <>
       <div className={styles.cartItems}>
-        {cart.map((item) => (
+        {cart.map((item: CartItem) => (
           <div key={item.id} className={styles.cartItem}>
             <div className={styles.itemImage}>
               <img src={item.image} alt={item.name} />
@@ -97,7 +98,7 @@ const Cart: React.FC = () => {
         <div className={styles.cartTotal}>
           <span>Total:</span>
           <span className={styles.totalPrice}>
-            {formatPrice(calculateTotal())}
+            {formatPrice(calculateTotal)}
           </span>
         </div>
         <div className={styles.cartActions}>

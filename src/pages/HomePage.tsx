@@ -3,12 +3,19 @@ import styled from "styled-components";
 import Header from "../components/Header/Header";
 import Footer from "../components/Footer/Footer";
 import Button from "../components/Button/Button";
+import { useAppContext } from "../hooks/useAppContext";
 
 import bgShape from "../assets/background/BG_Shape.png";
 import foodImage from "../assets/background/home.png";
 import trustpilotIcon from "../assets/background/trustpilot.svg";
 
 const HomePage: React.FC = () => {
+  const { navigateTo } = useAppContext();
+
+  const handleOrderClick = () => {
+    navigateTo("menu");
+  };
+
   return (
     <PageContainer>
       <Header />
@@ -28,9 +35,7 @@ const HomePage: React.FC = () => {
                 text ever since the 1500.
               </SubtitleText>
               <ActionArea>
-                <Button onClick={() => console.log("Order Placed!")}>
-                  Place an Order
-                </Button>
+                <Button onClick={handleOrderClick}>Place an Order</Button>
               </ActionArea>
               <TrustpilotArea>
                 <BrandLogo src={trustpilotIcon} alt="Trustpilot Logo" />
