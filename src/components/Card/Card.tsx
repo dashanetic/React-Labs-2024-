@@ -1,5 +1,6 @@
 import React, { useState, useCallback } from "react";
 import Button from "../Button/Button";
+import Toast from "../Toast/Toast";
 import styles from "./Card.module.css";
 import burgerClassic from "../../assets/images/Burger_Classic.png";
 import { useCart } from "../../hooks/useReduxCart";
@@ -19,6 +20,7 @@ const Card: React.FC<CardProps> = (props) => {
   const [quantity, setQuantity] = useState<number>(1);
   const [isDescriptionExpanded, setIsDescriptionExpanded] =
     useState<boolean>(false);
+  const [showToast, setShowToast] = useState<boolean>(false);
 
   const { name, description, image, price, id, category } = props;
   const fallbackImage = burgerClassic;
@@ -56,6 +58,7 @@ const Card: React.FC<CardProps> = (props) => {
     };
 
     addToCart(item, quantity);
+    setShowToast(true);
   }, [id, name, description, image, price, category, quantity, addToCart]);
 
   const renderHeader = useCallback((): JSX.Element => {
@@ -123,6 +126,12 @@ const Card: React.FC<CardProps> = (props) => {
 
         {renderFooter()}
       </div>
+
+      <Toast
+        isVisible={showToast}
+        onClose={() => setShowToast(false)}
+        itemName={name}
+      />
     </article>
   );
 };

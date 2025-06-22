@@ -28,3 +28,36 @@ export const selectAppSettings = (state: RootState) => state.app.settings;
 export const selectCurrentPage = (state: RootState) => state.app.currentPage;
 export const selectTheme = (state: RootState) => state.app.settings.theme;
 export const selectLanguage = (state: RootState) => state.app.settings.language;
+
+// Селекторы для заказов
+export const selectOrders = (state: RootState) => state.orders.orders;
+export const selectCurrentOrder = (state: RootState) =>
+  state.orders.currentOrder;
+export const selectOrdersLoading = (state: RootState) => state.orders.isLoading;
+export const selectOrdersCreating = (state: RootState) =>
+  state.orders.isCreating;
+export const selectOrdersError = (state: RootState) => state.orders.error;
+
+// Составные селекторы для заказов
+export const selectOrdersCount = createSelector(
+  [selectOrders],
+  (orders) => orders.length
+);
+
+export const selectOrdersTotalValue = createSelector([selectOrders], (orders) =>
+  orders.reduce((total, order) => total + order.totalPrice, 0)
+);
+
+export const selectOrderById = createSelector(
+  [selectOrders, (_state: RootState, orderId: string) => orderId],
+  (orders, orderId) => orders.find((order) => order.id === orderId)
+);
+
+export const selectRecentOrders = createSelector([selectOrders], (orders) =>
+  [...orders]
+    .sort(
+      (a, b) =>
+        new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+    )
+    .slice(0, 5)
+);

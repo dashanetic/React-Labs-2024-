@@ -47,3 +47,73 @@ export interface CreateOrderData {
   customerPhone: string;
   deliveryAddress: string;
 }
+
+// Дополнительные типы для работы с заказами
+export enum OrderStatus {
+  PENDING = "pending",
+  CONFIRMED = "confirmed",
+  PREPARING = "preparing",
+  READY = "ready",
+  DELIVERED = "delivered",
+  CANCELLED = "cancelled",
+}
+
+export interface OrderWithStatus extends Order {
+  status: OrderStatus;
+  estimatedDeliveryTime?: string;
+  notes?: string;
+}
+
+export interface OrderFilters {
+  status?: OrderStatus;
+  dateFrom?: string;
+  dateTo?: string;
+  customerId?: string;
+}
+
+export interface OrderSummary {
+  totalOrders: number;
+  totalRevenue: number;
+  averageOrderValue: number;
+  popularItems: {
+    mealId: string;
+    mealName: string;
+    totalQuantity: number;
+  }[];
+}
+
+export interface UpdateOrderData {
+  status?: OrderStatus;
+  estimatedDeliveryTime?: string;
+  notes?: string;
+}
+
+// Типы для Redux состояния заказов
+export interface OrderState {
+  orders: Order[];
+  isLoading: boolean;
+  isCreating: boolean;
+  error: string | null;
+  currentOrder: Order | null;
+  filters: OrderFilters;
+}
+
+// Типы для hook'ов работы с заказами
+export interface UseOrdersResult {
+  orders: Order[] | null;
+  loading: boolean;
+  error: string | null;
+  refreshOrders: () => Promise<Order[] | null>;
+  createOrder: (orderData: CreateOrderData) => Promise<Order | null>;
+  cancelOrder: (orderId: string) => Promise<boolean>;
+}
+
+export interface UseOrderResult {
+  order: Order | null;
+  loading: boolean;
+  error: string | null;
+  updateOrder: (
+    orderId: string,
+    updateData: UpdateOrderData
+  ) => Promise<Order | null>;
+}

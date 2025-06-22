@@ -13,8 +13,27 @@ interface CartState {
   orderError: string | null;
 }
 
+// Функции для работы с localStorage
+const loadCartFromStorage = (): CartItem[] => {
+  try {
+    const savedCart = localStorage.getItem("cart");
+    return savedCart ? JSON.parse(savedCart) : [];
+  } catch (error) {
+    console.error("Error loading cart from localStorage:", error);
+    return [];
+  }
+};
+
+const saveCartToStorage = (items: CartItem[]) => {
+  try {
+    localStorage.setItem("cart", JSON.stringify(items));
+  } catch (error) {
+    console.error("Error saving cart to localStorage:", error);
+  }
+};
+
 const initialState: CartState = {
-  items: [],
+  items: loadCartFromStorage(),
   isCartOpen: false,
   isSubmittingOrder: false,
   orderSubmitted: false,
@@ -93,9 +112,14 @@ const cartSlice = createSlice({
       } else {
         state.items.push({ ...item, quantity });
       }
+
+      // Сохраняем в localStorage
+      saveCartToStorage(state.items);
     },
     removeFromCart: (state, action: PayloadAction<string>) => {
       state.items = state.items.filter((item) => item.id !== action.payload);
+      // Сохраняем в localStorage
+      saveCartToStorage(state.items);
     },
     updateCartItemQuantity: (
       state,
@@ -111,9 +135,14 @@ const cartSlice = createSlice({
           item.quantity = newQuantity;
         }
       }
+
+      // Сохраняем в localStorage
+      saveCartToStorage(state.items);
     },
     clearCart: (state) => {
       state.items = [];
+      // Сохраняем в localStorage
+      saveCartToStorage(state.items);
     },
     resetOrderState: (state) => {
       state.orderSubmitted = false;
@@ -130,6 +159,8 @@ const cartSlice = createSlice({
         state.isSubmittingOrder = false;
         state.orderSubmitted = true;
         state.items = [];
+        // Сохраняем в localStorage
+        saveCartToStorage(state.items);
       })
       .addCase(submitOrder.rejected, (state, action) => {
         state.isSubmittingOrder = false;

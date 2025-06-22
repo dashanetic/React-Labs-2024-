@@ -32,6 +32,7 @@ export const useCart = () => {
 
   const addToCart = useCallback(
     (item: Meal, quantity: number = 1) => {
+      console.log("Adding to cart:", { item: item.name, quantity });
       dispatch(addToCartAction({ item, quantity }));
     },
     [dispatch]

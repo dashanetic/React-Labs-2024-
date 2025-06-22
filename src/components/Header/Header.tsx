@@ -1,19 +1,17 @@
 import React, { useState } from "react";
+import { Link, useLocation } from "react-router-dom";
 import { navItems } from "../../data/headerData";
 import companyLogo from "../../assets/icons/logo.svg";
 import cartIcon from "../../assets/icons/cart.svg";
 import styles from "./Header.module.css";
-import { useAppContext } from "../../hooks/useAppContext";
 import { useAuth } from "../../hooks/useReduxAuth";
-import { useCart } from "../../hooks/useReduxCart";
 import { selectCartItemsCount } from "../../redux/selectors";
 import { useAppSelector } from "../../redux/hooks";
 
 const Header: React.FC = () => {
   const [menuExpanded, setMenuExpanded] = useState<boolean>(false);
-  const { currentPage, navigateTo } = useAppContext();
+  const location = useLocation();
   const { currentUser, logout } = useAuth();
-  const { toggleCart } = useCart();
   const cartItemCount = useAppSelector(selectCartItemsCount);
 
   const handleMenuToggle = (): void => {
@@ -24,49 +22,49 @@ const Header: React.FC = () => {
     logout();
   };
 
+  const getRoutePath = (label: string): string => {
+    switch (label) {
+      case "Home":
+        return "/";
+      case "Menu":
+        return "/menu";
+      case "Login":
+        return "/login";
+      default:
+        return "/";
+    }
+  };
+
+  const isActiveRoute = (label: string): boolean => {
+    const routePath = getRoutePath(label);
+    return location.pathname === routePath;
+  };
+
   const createNavigationLinks = (): JSX.Element[] => {
     return navItems.map((navLink, itemIndex) => (
-      <span
+      <Link
         key={`nav-item-${itemIndex}`}
+        to={getRoutePath(navLink.label)}
         className={`${styles.navItem} ${
-          (navLink.label === "Home" && currentPage === "home") ||
-          (navLink.label === "Menu" && currentPage === "menu") ||
-          (navLink.label === "Login" && currentPage === "login")
-            ? styles.activeNavItem
-            : ""
+          isActiveRoute(navLink.label) ? styles.activeNavItem : ""
         }`}
-        onClick={() => {
-          if (navLink.label === "Home") {
-            navigateTo("home");
-          } else if (navLink.label === "Menu") {
-            navigateTo("menu");
-          } else if (navLink.label === "Login") {
-            navigateTo("login");
-          }
-          setMenuExpanded(false);
-        }}
-        style={{ cursor: "pointer" }}
+        onClick={() => setMenuExpanded(false)}
       >
         {navLink.label}
-      </span>
+      </Link>
     ));
   };
 
   return (
     <header className={styles.appHeader}>
-      <div
-        className={styles.logoLink}
-        aria-label="Homepage"
-        style={{ cursor: "pointer" }}
-        onClick={() => navigateTo("home")}
-      >
+      <Link to="/" className={styles.logoLink} aria-label="Homepage">
         <img
           src={companyLogo}
           alt="Company Logo"
           className={styles.logoIcon}
           loading="lazy"
         />
-      </div>
+      </Link>
 
       <button
         className={styles.burgerMenu}
@@ -95,6 +93,15 @@ const Header: React.FC = () => {
         {/* User Profile Section */}
         {currentUser && (
           <div className={styles.userContainer}>
+            <Link
+              to="/order"
+              className={`${styles.navItem} ${
+                location.pathname === "/order" ? styles.activeNavItem : ""
+              }`}
+              onClick={() => setMenuExpanded(false)}
+            >
+              Order
+            </Link>
             <span className={styles.userName}>{currentUser.name}</span>
             <button
               className={styles.logoutButton}
@@ -106,11 +113,7 @@ const Header: React.FC = () => {
           </div>
         )}
 
-        <div
-          className={styles.cartIconContainer}
-          onClick={toggleCart}
-          style={{ cursor: "pointer" }}
-        >
+        <Link to="/order" className={styles.cartIconContainer}>
           <img
             src={cartIcon}
             alt="Shopping Cart"
@@ -120,7 +123,7 @@ const Header: React.FC = () => {
           {cartItemCount > 0 && (
             <span className={styles.cartCounter}>{cartItemCount}</span>
           )}
-        </div>
+        </Link>
       </nav>
     </header>
   );

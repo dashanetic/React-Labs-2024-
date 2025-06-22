@@ -1,4 +1,5 @@
-import React, { useState, FormEvent } from "react";
+import React, { useState, FormEvent, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import Button from "../components/Button/Button";
 import Header from "../components/Header/Header";
@@ -18,7 +19,15 @@ const LoginPage: React.FC = () => {
   const [isLogin, setIsLogin] = useState<boolean>(true);
   const [error, setError] = useState<string>("");
 
-  const { login, register } = useAuth();
+  const navigate = useNavigate();
+  const { login, register, currentUser } = useAuth();
+
+  // Redirect if already logged in
+  useEffect(() => {
+    if (currentUser) {
+      navigate("/");
+    }
+  }, [currentUser, navigate]);
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -40,6 +49,9 @@ const LoginPage: React.FC = () => {
 
       if (!result.success) {
         setError(result.error || "Authentication error");
+      } else {
+        // Successful login/register - redirect to home page
+        navigate("/");
       }
     } catch (err) {
       setError("An error occurred during request processing");
