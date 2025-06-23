@@ -5,11 +5,13 @@ import Button from "../components/Button/Button";
 import Header from "../components/Header/Header";
 import Footer from "../components/Footer/Footer";
 import { useAuth } from "../hooks/useReduxAuth";
+import { useTheme } from "../theme-context";
 
 import bgShape from "../assets/background/BG_Shape.png";
 
 interface FormContainerProps {
   isRegistration: boolean;
+  isDark?: boolean;
 }
 
 const LoginPage: React.FC = () => {
@@ -21,6 +23,8 @@ const LoginPage: React.FC = () => {
 
   const navigate = useNavigate();
   const { login, register, currentUser } = useAuth();
+  const { theme } = useTheme();
+  const isDark = theme === "dark";
 
   useEffect(() => {
     if (currentUser) {
@@ -66,8 +70,8 @@ const LoginPage: React.FC = () => {
     <PageWrapper>
       <Header />
       <MainContent>
-        <PageContainer>
-          <FormContainer isRegistration={!isLogin}>
+        <PageContainer isDark={isDark}>
+          <FormContainer isRegistration={!isLogin} isDark={isDark}>
             <FormTitle>{isLogin ? "Log in" : "Sign up"}</FormTitle>
 
             {error && <ErrorMessage>{error}</ErrorMessage>}
@@ -77,6 +81,7 @@ const LoginPage: React.FC = () => {
                 <FormGroup>
                   <Label htmlFor="name">Name</Label>
                   <Input
+                    isDark={isDark}
                     type="text"
                     id="name"
                     value={name}
@@ -89,6 +94,7 @@ const LoginPage: React.FC = () => {
               <FormGroup>
                 <Label htmlFor="email">Email</Label>
                 <Input
+                  isDark={isDark}
                   type="email"
                   id="email"
                   value={email}
@@ -101,6 +107,7 @@ const LoginPage: React.FC = () => {
               <FormGroup>
                 <Label htmlFor="password">Password</Label>
                 <Input
+                  isDark={isDark}
                   type="password"
                   id="password"
                   value={password}
@@ -141,7 +148,7 @@ const MainContent = styled.main`
   flex-direction: column;
 `;
 
-const PageContainer = styled.div`
+const PageContainer = styled.div<{ isDark?: boolean }>`
   display: flex;
   justify-content: center;
   align-items: center;
@@ -150,10 +157,32 @@ const PageContainer = styled.div`
   background-size: cover;
   background-position: center;
   padding: 20px;
+  position: relative;
+
+  &::before {
+    content: "";
+    display: ${({ isDark }) => (isDark ? "block" : "none")};
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: #121212;
+    opacity: 0.8;
+    z-index: 0;
+    pointer-events: none;
+  }
+
+  > * {
+    position: relative;
+    z-index: 1;
+  }
 `;
 
 const FormContainer = styled.div<FormContainerProps>`
-  background-color: rgba(255, 255, 255, 0.85);
+  background-color: ${({ isDark }) =>
+    isDark ? "rgba(18, 18, 18, 0.92)" : "rgba(255, 255, 255, 0.85)"};
+  color: ${({ isDark }) => (isDark ? "#f5f5f5" : "inherit")};
   backdrop-filter: blur(5px);
   border-radius: 8px;
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
@@ -165,7 +194,7 @@ const FormContainer = styled.div<FormContainerProps>`
   justify-content: flex-start;
   box-sizing: border-box;
   overflow: auto;
-  transition: height 0.3s ease;
+  transition: height 0.3s ease, background-color 0.3s;
 `;
 
 const FormTitle = styled.h1`
@@ -200,19 +229,20 @@ const Label = styled.label`
   margin-right: 10px;
 `;
 
-const Input = styled.input`
+const Input = styled.input<{ isDark?: boolean }>`
   flex: 1;
   padding: 12px;
   border: 1px solid #dddddd;
   border-radius: 4px;
   font-size: 16px;
-  transition: border-color 0.3s;
-  background-color: #fafafa;
+  transition: border-color 0.3s, background-color 0.3s;
+  background-color: ${({ isDark }) => (isDark ? "#232323" : "#fafafa")};
+  color: ${({ isDark }) => (isDark ? "#f5f5f5" : "inherit")};
 
   &:focus {
     border-color: #35b8be;
     outline: none;
-    background-color: #fafafa;
+    background-color: ${({ isDark }) => (isDark ? "#232323" : "#fafafa")};
   }
 `;
 

@@ -4,6 +4,7 @@ import Header from "../components/Header/Header";
 import Footer from "../components/Footer/Footer";
 import Button from "../components/Button/Button";
 import { useAppContext } from "../hooks/useAppContext";
+import { useTheme } from "../theme-context";
 
 import bgShape from "../assets/background/BG_Shape.png";
 import foodImage from "../assets/background/home.png";
@@ -11,6 +12,8 @@ import trustpilotIcon from "../assets/background/trustpilot.svg";
 
 const HomePage: React.FC = () => {
   const { navigateTo } = useAppContext();
+  const { theme } = useTheme();
+  const isDark = theme === "dark";
 
   const handleOrderClick = () => {
     navigateTo("menu");
@@ -20,7 +23,7 @@ const HomePage: React.FC = () => {
     <PageContainer>
       <Header />
       <MainContent>
-        <HeroSection>
+        <HeroSection isDark={isDark}>
           <HeroWrapper>
             <ContentBlock>
               <MainTitle>
@@ -70,7 +73,7 @@ const MainContent = styled.main`
   flex-direction: column;
 `;
 
-const HeroSection = styled.section`
+const HeroSection = styled.section<{ isDark?: boolean }>`
   background: url(${bgShape}) no-repeat;
   background-size: cover;
   background-position: center;
@@ -79,6 +82,26 @@ const HeroSection = styled.section`
   text-align: left;
   padding: 70px 20px;
   flex: 1;
+  position: relative;
+
+  &::before {
+    content: "";
+    display: ${({ isDark }) => (isDark ? "block" : "none")};
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: #121212;
+    opacity: 0.8;
+    z-index: 0;
+    pointer-events: none;
+  }
+
+  > * {
+    position: relative;
+    z-index: 1;
+  }
 `;
 
 const HeroWrapper = styled.div`

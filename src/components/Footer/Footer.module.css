@@ -167,6 +167,18 @@
 body[data-theme="dark"] .footer {
   background-color: var(--background-color);
 }
+body[data-theme="dark"] .footer::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: #121212;
+  opacity: 0.8;
+  z-index: 0;
+  pointer-events: none;
+}
 body[data-theme="dark"] .footerText,
 body[data-theme="dark"] .link,
 body[data-theme="dark"] .builtWith {
@@ -177,4 +189,9 @@ body[data-theme="dark"] .linkTitle {
 }
 body[data-theme="dark"] .divider {
   background: var(--border-color);
+}
+
+.footer > * {
+  position: relative;
+  z-index: 1;
 }
