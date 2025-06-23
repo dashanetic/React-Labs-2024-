@@ -10,6 +10,7 @@
   background-size: contain;
   min-height: 100vh;
   position: relative;
+  background-color: var(--background-color);
 }
 
 .menuSection::before {
@@ -27,10 +28,21 @@
   opacity: 0.8;
 }
 
+body[data-theme="dark"] .menuSection {
+  background-color: #121212;
+  background-image: none;
+}
+
+body[data-theme="dark"] .menuSection::before {
+  background-color: transparent;
+  opacity: 0;
+  mix-blend-mode: normal;
+}
+
 .title {
   margin: 0;
   text-align: center;
-  color: #35b8be;
+  color: var(--primary-color);
   font-size: 50px;
   font-family: Inter, sans-serif;
   font-weight: 400;
@@ -38,13 +50,14 @@
   letter-spacing: 1.65px;
   word-wrap: break-word;
   animation: fadeInDown 0.8s ease-out;
+  background-color: transparent;
 }
 
 .description {
   max-width: 800px;
   width: 80%;
   text-align: center;
-  color: #546285;
+  color: var(--text-color-secondary);
   font-size: 16px;
   font-family: Inter, sans-serif;
   font-weight: 400;
@@ -53,6 +66,7 @@
   word-wrap: break-word;
   margin: 10px 0 30px;
   animation: fadeIn 1s ease-out;
+  background-color: transparent;
 }
 
 .phoneTooltip {
@@ -126,8 +140,31 @@
   max-width: 800px;
 }
 
+.buttonRow > * {
+  background-color: var(--background-color);
+  color: var(--text-color);
+  border: 1px solid var(--border-color);
+  transition: background 0.3s, color 0.3s;
+}
+
+.buttonRow > *:hover {
+  background-color: var(--primary-color);
+  color: #fff;
+}
+
+body[data-theme="dark"] .buttonRow > * {
+  background-color: var(--primary-color);
+  color: #fff;
+  border: 1px solid var(--primary-color);
+}
+
+body[data-theme="dark"] .buttonRow > *:hover {
+  background-color: var(--primary-color-dark);
+  color: #fff;
+}
+
 .noItemsMessage {
-  color: #546285;
+  color: var(--text-color-secondary);
   font-size: 16px;
   font-family: Inter, sans-serif;
   font-weight: 400;
@@ -135,10 +172,14 @@
   letter-spacing: 0.35px;
   text-align: center;
   padding: 20px;
-  background-color: rgba(255, 255, 255, 0.8);
+  background-color: var(--background-color);
   border-radius: 8px;
-  border: 1px dashed #ddd;
+  border: 1px dashed var(--border-color);
   margin: 30px 0;
+}
+
+body[data-theme="dark"] .noItemsMessage {
+  background-color: #121212;
 }
 
 @keyframes fadeIn {

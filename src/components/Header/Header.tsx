@@ -9,6 +9,7 @@ import { selectCartItemsCount } from "../../redux/selectors";
 import { useAppSelector } from "../../redux/hooks";
 import Button from "../Button/Button";
 import { useCart } from "../../hooks/useReduxCart";
+import ThemeSwitcher from "./ThemeSwitcher";
 
 const Header: React.FC = () => {
   const [menuExpanded, setMenuExpanded] = useState<boolean>(false);
@@ -93,6 +94,10 @@ const Header: React.FC = () => {
         </button>
 
         <div className={styles.navLinks}>{createNavigationLinks()}</div>
+
+        <div style={{ margin: "1rem 0" }}>
+          <ThemeSwitcher />
+        </div>
 
         {currentUser && (
           <div className={styles.userContainer}>

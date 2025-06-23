@@ -1,7 +1,7 @@
 .card {
   border-radius: 8px;
-  border: 1px solid rgba(53, 184, 190, 0.16);
-  background: #fff;
+  border: 1px solid var(--border-color);
+  background: var(--background-color);
   max-width: 578px;
   padding: 24px;
   display: flex;
@@ -43,13 +43,13 @@
 .cardName {
   letter-spacing: 0.62px;
   font-size: 17px;
-  color: #08090a;
+  color: var(--text-color);
 }
 
 .cardPrice {
   border-radius: 5px;
-  background: rgba(53, 184, 190, 0.11);
-  color: #35b8be;
+  background: var(--primary-color-light);
+  color: var(--primary-color);
   min-width: 102px;
   padding: 5px 9px;
   text-align: center;
@@ -60,7 +60,7 @@
 .cardDescription {
   letter-spacing: 0.31px;
   line-height: 23px;
-  color: #546285;
+  color: var(--text-color-secondary);
   max-width: 348px;
   margin-bottom: 6px;
   font-size: 15px;
@@ -102,10 +102,10 @@
 
 .quantityInput {
   border-radius: 7px;
-  border: 1px solid #dddddd;
-  background: #fafafa;
+  border: 1px solid var(--border-color);
+  background: var(--background-color);
   width: 62px;
-  color: #08090a;
+  color: var(--text-color);
   font-size: 15px;
   text-align: center;
 }

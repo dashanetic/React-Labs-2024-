@@ -213,3 +213,31 @@
     height: 45px;
   }
 }
+
+body[data-theme="dark"] .appHeader,
+body[data-theme="dark"] .footer {
+  background-color: var(--background-color);
+}
+body[data-theme="dark"] .navItem,
+body[data-theme="dark"] .userName,
+body[data-theme="dark"] .logoutButton {
+  color: var(--text-color);
+}
+body[data-theme="dark"] .cartIconContainer {
+  background-color: var(--primary-color);
+}
+body[data-theme="dark"] .cartCounter {
+  background-color: #fff;
+  color: var(--primary-color);
+}
+body[data-theme="dark"] .footerText,
+body[data-theme="dark"] .link,
+body[data-theme="dark"] .builtWith {
+  color: var(--text-color-secondary);
+}
+body[data-theme="dark"] .linkTitle {
+  color: var(--text-color);
+}
+body[data-theme="dark"] .divider {
+  background: var(--border-color);
+}

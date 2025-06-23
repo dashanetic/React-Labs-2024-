@@ -5,6 +5,7 @@ import "normalize.css";
 import "./index.css";
 import App from "./App";
 import { store } from "./redux/store";
+import { ThemeProvider } from "./theme-context";
 
 function initializeApplication(): void {
   const rootElement = document.getElementById("root");
@@ -18,7 +19,9 @@ function initializeApplication(): void {
   appRoot.render(
     <StrictMode>
       <Provider store={store}>
-        <App />
+        <ThemeProvider>
+          <App />
+        </ThemeProvider>
       </Provider>
     </StrictMode>
   );

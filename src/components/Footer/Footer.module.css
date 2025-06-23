@@ -3,7 +3,7 @@
   margin-top: auto;
   position: relative;
   padding: 42px 22px;
-  background-color: #f5fbfc;
+  background-color: var(--background-color);
   background-image: url("../../assets/background/footer.svg");
   background-repeat: no-repeat;
   background-position: -11% 100%;
@@ -33,7 +33,7 @@
 }
 
 .footerText {
-  color: #546285;
+  color: var(--text-color-secondary);
   font-size: 15px;
   font-family: Inter, sans-serif;
   font-weight: 400;
@@ -58,7 +58,7 @@
 }
 
 .linkTitle {
-  color: #08090a;
+  color: var(--text-color);
   font-size: 12px;
   font-weight: 400;
   text-transform: uppercase;
@@ -67,7 +67,7 @@
 }
 
 .link {
-  color: #546285;
+  color: var(--text-color-secondary);
   font-size: 14px;
   font-weight: 400;
   line-height: 21px;
@@ -76,13 +76,13 @@
 }
 
 .link:hover {
-  color: #35b8be;
+  color: var(--primary-color);
 }
 
 .divider {
   width: 100%;
   height: 1px;
-  background: rgba(126, 130, 143, 0.1);
+  background: var(--border-color);
   margin: 21px 0 68px 0;
 }
 
@@ -95,13 +95,13 @@
 .builtWith {
   display: flex;
   gap: 7px;
-  color: #353448;
+  color: var(--text-color-secondary);
   font-size: 14px;
   line-height: 19px;
 }
 
 .highlightedText {
-  color: #35b8be;
+  color: var(--primary-color);
 }
 
 .socialIcons {
@@ -162,4 +162,19 @@
   .divider {
     margin: 20px 0;
   }
+}
+
+body[data-theme="dark"] .footer {
+  background-color: var(--background-color);
+}
+body[data-theme="dark"] .footerText,
+body[data-theme="dark"] .link,
+body[data-theme="dark"] .builtWith {
+  color: var(--text-color-secondary);
+}
+body[data-theme="dark"] .linkTitle {
+  color: var(--text-color);
+}
+body[data-theme="dark"] .divider {
+  background: var(--border-color);
 }
