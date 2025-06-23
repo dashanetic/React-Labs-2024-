@@ -1,4 +1,3 @@
-// Типы для UI компонентов, связанных с заказами
 import { Order, CreateOrderData, OrderStatus, OrderSummary } from "./api/types";
 
 export interface OrderCardProps {
@@ -40,7 +39,6 @@ export interface OrderSummaryProps {
   isLoading: boolean;
 }
 
-// Типы для форм
 export interface CustomerFormData {
   name: string;
   email: string;
@@ -59,7 +57,6 @@ export interface OrderFormData extends CustomerFormData {
   notes?: string;
 }
 
-// Типы для фильтров и сортировки
 export interface OrderFilterFormData {
   status: string;
   dateFrom: string;
@@ -78,7 +75,6 @@ export interface OrderSortConfig {
   direction: SortDirection;
 }
 
-// Типы для модальных окон
 export interface OrderModalProps {
   isOpen: boolean;
   onClose: () => void;
@@ -86,7 +82,6 @@ export interface OrderModalProps {
   mode: "view" | "edit" | "create";
 }
 
-// Типы для контекста заказов (если понадобится)
 export interface OrderContextValue {
   orders: Order[];
   currentOrder: Order | null;

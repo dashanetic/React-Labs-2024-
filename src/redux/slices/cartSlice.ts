@@ -13,7 +13,6 @@ interface CartState {
   orderError: string | null;
 }
 
-// Функции для работы с localStorage
 const loadCartFromStorage = (): CartItem[] => {
   try {
     const savedCart = localStorage.getItem("cart");
@@ -113,12 +112,10 @@ const cartSlice = createSlice({
         state.items.push({ ...item, quantity });
       }
 
-      // Сохраняем в localStorage
       saveCartToStorage(state.items);
     },
     removeFromCart: (state, action: PayloadAction<string>) => {
       state.items = state.items.filter((item) => item.id !== action.payload);
-      // Сохраняем в localStorage
       saveCartToStorage(state.items);
     },
     updateCartItemQuantity: (
@@ -136,12 +133,10 @@ const cartSlice = createSlice({
         }
       }
 
-      // Сохраняем в localStorage
       saveCartToStorage(state.items);
     },
     clearCart: (state) => {
       state.items = [];
-      // Сохраняем в localStorage
       saveCartToStorage(state.items);
     },
     resetOrderState: (state) => {
@@ -159,7 +154,6 @@ const cartSlice = createSlice({
         state.isSubmittingOrder = false;
         state.orderSubmitted = true;
         state.items = [];
-        // Сохраняем в localStorage
         saveCartToStorage(state.items);
       })
       .addCase(submitOrder.rejected, (state, action) => {

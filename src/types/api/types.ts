@@ -48,7 +48,6 @@ export interface CreateOrderData {
   deliveryAddress: string;
 }
 
-// Дополнительные типы для работы с заказами
 export enum OrderStatus {
   PENDING = "pending",
   CONFIRMED = "confirmed",
@@ -88,7 +87,6 @@ export interface UpdateOrderData {
   notes?: string;
 }
 
-// Типы для Redux состояния заказов
 export interface OrderState {
   orders: Order[];
   isLoading: boolean;
@@ -98,7 +96,6 @@ export interface OrderState {
   filters: OrderFilters;
 }
 
-// Типы для hook'ов работы с заказами
 export interface UseOrdersResult {
   orders: Order[] | null;
   loading: boolean;

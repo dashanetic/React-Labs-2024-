@@ -9,7 +9,6 @@ import { useAppDispatch, useAppSelector } from "./redux/hooks";
 import { initializeAuth } from "./redux/slices/authSlice";
 import { selectAuthLoading, selectTheme } from "./redux/selectors";
 
-// Компонент для защищенных маршрутов
 const PrivateRoute: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {

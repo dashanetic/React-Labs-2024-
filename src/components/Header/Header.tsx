@@ -7,18 +7,22 @@ import styles from "./Header.module.css";
 import { useAuth } from "../../hooks/useReduxAuth";
 import { selectCartItemsCount } from "../../redux/selectors";
 import { useAppSelector } from "../../redux/hooks";
+import Button from "../Button/Button";
+import { useCart } from "../../hooks/useReduxCart";
 
 const Header: React.FC = () => {
   const [menuExpanded, setMenuExpanded] = useState<boolean>(false);
   const location = useLocation();
   const { currentUser, logout } = useAuth();
   const cartItemCount = useAppSelector(selectCartItemsCount);
+  const { clearCart } = useCart();
 
   const handleMenuToggle = (): void => {
     setMenuExpanded((prevState) => !prevState);
   };
 
   const handleLogout = (): void => {
+    clearCart();
     logout();
   };
 
@@ -90,7 +94,6 @@ const Header: React.FC = () => {
 
         <div className={styles.navLinks}>{createNavigationLinks()}</div>
 
-        {/* User Profile Section */}
         {currentUser && (
           <div className={styles.userContainer}>
             <Link
@@ -103,13 +106,9 @@ const Header: React.FC = () => {
               Order
             </Link>
             <span className={styles.userName}>{currentUser.name}</span>
-            <button
-              className={styles.logoutButton}
-              onClick={handleLogout}
-              aria-label="Logout"
-            >
-              Выйти
-            </button>
+            <Button onClick={handleLogout} aria-label="Logout">
+              Logout
+            </Button>
           </div>
         )}
 

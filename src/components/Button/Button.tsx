@@ -4,13 +4,17 @@ import styles from "./Button.module.css";
 interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   children: React.ReactNode;
   isActive?: boolean;
+  wide?: boolean;
+  rect?: boolean;
 }
 
 const Button: React.FC<ButtonProps> = ({
   children,
-  isActive = true,
-  type = "button",
   onClick,
+  isActive = true,
+  wide = false,
+  rect = false,
+  type = "button",
   ...rest
 }) => {
   const handleButtonClick = (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -21,7 +25,7 @@ const Button: React.FC<ButtonProps> = ({
 
   const computedButtonStyles = `${styles.button} ${
     !isActive ? styles.inactive : ""
-  }`;
+  } ${wide ? styles.wide : ""} ${rect ? styles.rect : ""}`;
 
   return (
     <button

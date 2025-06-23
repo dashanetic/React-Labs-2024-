@@ -1,7 +1,6 @@
 import { createSlice, PayloadAction, createAsyncThunk } from "@reduxjs/toolkit";
 import { Order, CreateOrderData, BASE_URL } from "../../types/api/types";
 
-// Async thunk для получения заказов пользователя
 export const fetchOrders = createAsyncThunk(
   "orders/fetchOrders",
   async (_userId: string, { rejectWithValue }) => {
@@ -22,7 +21,6 @@ export const fetchOrders = createAsyncThunk(
   }
 );
 
-// Async thunk для получения конкретного заказа
 export const fetchOrderById = createAsyncThunk(
   "orders/fetchOrderById",
   async (orderId: string, { rejectWithValue }) => {
@@ -43,7 +41,6 @@ export const fetchOrderById = createAsyncThunk(
   }
 );
 
-// Async thunk для создания нового заказа
 export const createOrder = createAsyncThunk(
   "orders/createOrder",
   async (orderData: CreateOrderData, { rejectWithValue }) => {
@@ -70,7 +67,6 @@ export const createOrder = createAsyncThunk(
   }
 );
 
-// Async thunk для отмены заказа
 export const cancelOrder = createAsyncThunk(
   "orders/cancelOrder",
   async (orderId: string, { rejectWithValue }) => {
@@ -125,7 +121,6 @@ const orderSlice = createSlice({
     },
   },
   extraReducers: (builder) => {
-    // Fetch orders
     builder
       .addCase(fetchOrders.pending, (state) => {
         state.isLoading = true;
@@ -140,7 +135,6 @@ const orderSlice = createSlice({
         state.isLoading = false;
         state.error = action.payload as string;
       })
-      // Fetch order by ID
       .addCase(fetchOrderById.pending, (state) => {
         state.isLoading = true;
         state.error = null;
@@ -154,14 +148,13 @@ const orderSlice = createSlice({
         state.isLoading = false;
         state.error = action.payload as string;
       })
-      // Create order
       .addCase(createOrder.pending, (state) => {
         state.isCreating = true;
         state.error = null;
       })
       .addCase(createOrder.fulfilled, (state, action) => {
         state.isCreating = false;
-        state.orders.unshift(action.payload); // Добавляем новый заказ в начало списка
+        state.orders.unshift(action.payload);
         state.currentOrder = action.payload;
         state.error = null;
       })
@@ -169,7 +162,6 @@ const orderSlice = createSlice({
         state.isCreating = false;
         state.error = action.payload as string;
       })
-      // Cancel order
       .addCase(cancelOrder.pending, (state) => {
         state.isLoading = true;
         state.error = null;

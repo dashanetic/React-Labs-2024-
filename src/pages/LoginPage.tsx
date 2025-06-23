@@ -22,7 +22,6 @@ const LoginPage: React.FC = () => {
   const navigate = useNavigate();
   const { login, register, currentUser } = useAuth();
 
-  // Redirect if already logged in
   useEffect(() => {
     if (currentUser) {
       navigate("/");
@@ -50,7 +49,6 @@ const LoginPage: React.FC = () => {
       if (!result.success) {
         setError(result.error || "Authentication error");
       } else {
-        // Successful login/register - redirect to home page
         navigate("/");
       }
     } catch (err) {

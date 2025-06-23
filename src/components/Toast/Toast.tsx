@@ -8,22 +8,12 @@ interface ToastProps {
 }
 
 const Toast: React.FC<ToastProps> = ({ isVisible, onClose, itemName }) => {
-  console.log("Toast render:", { isVisible, itemName });
-
   if (!isVisible) return null;
 
   const handleGoToCart = (e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
-    console.log("Go to Cart clicked - event:", e);
-    console.log("Current URL:", window.location.href);
-
-    // Закрываем Toast сначала
     onClose();
-
-    console.log("Toast closed, navigating...");
-
-    // Прямая навигация
     window.location.href = window.location.origin + "/order";
   };
 
@@ -32,7 +22,6 @@ const Toast: React.FC<ToastProps> = ({ isVisible, onClose, itemName }) => {
       <ToastContainer
         onClick={(e) => {
           e.stopPropagation();
-          console.log("ToastContainer clicked");
         }}
       >
         <ToastHeader>
@@ -49,7 +38,6 @@ const Toast: React.FC<ToastProps> = ({ isVisible, onClose, itemName }) => {
         <ToastActions
           onClick={(e) => {
             e.stopPropagation();
-            console.log("ToastActions clicked");
           }}
         >
           <ContinueButton onClick={onClose}>Continue Shopping</ContinueButton>
@@ -57,7 +45,6 @@ const Toast: React.FC<ToastProps> = ({ isVisible, onClose, itemName }) => {
             onClick={handleGoToCart}
             onMouseDown={(e) => {
               e.preventDefault();
-              console.log("GoToCartButton mousedown");
             }}
           >
             Go to Cart

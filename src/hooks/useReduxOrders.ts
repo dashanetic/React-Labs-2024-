@@ -98,7 +98,6 @@ export const useOrders = () => {
   };
 };
 
-// Хук для работы с конкретным заказом
 export const useOrder = (orderId?: string) => {
   const dispatch = useAppDispatch();
   const orders = useAppSelector(selectOrders);

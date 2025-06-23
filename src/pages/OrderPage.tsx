@@ -24,13 +24,6 @@ const OrderPage: React.FC = () => {
   const { createNewOrder, isCreating, error: orderError } = useOrders();
   const { currentUser } = useAuth();
 
-  // Debug logging
-  console.log("OrderPage rendered:", {
-    cartItemsCount: cart.length,
-    cart: cart,
-    currentUser: currentUser?.email || "Not logged in",
-  });
-
   useEffect(() => {
     if (orderError) {
       setError(orderError);
@@ -120,75 +113,68 @@ const OrderPage: React.FC = () => {
         <PageContainer>
           <ContentContainer>
             <Title>Finish your order</Title>
-
             {error && <ErrorMessage>{error}</ErrorMessage>}
-
-            <OrderSection>
-              <SectionTitle>Your Order</SectionTitle>
-              <ItemsList>
-                {cart.map((item) => (
-                  <OrderItem key={item.id}>
-                    <ItemImage src={item.image} alt={item.name} />
-                    <ItemDetails>
-                      <ItemName>{item.name}</ItemName>
-                      <ItemPrice>{formatPrice(item.price)}</ItemPrice>
-                    </ItemDetails>
-                    <ItemControls>
-                      <QuantityInput
-                        type="number"
-                        min="0"
-                        value={item.quantity}
-                        onChange={(e) =>
-                          handleQuantityChange(
-                            item,
-                            parseInt(e.target.value) || 0
-                          )
-                        }
-                      />
-                      <RemoveButton onClick={() => removeFromCart(item.id)}>
-                        ❌
-                      </RemoveButton>
-                    </ItemControls>
-                  </OrderItem>
-                ))}
-              </ItemsList>
-
-              <TotalSection>
-                <TotalText>Total: {formatPrice(calculateTotal)}</TotalText>
-              </TotalSection>
-            </OrderSection>
-
-            <AddressSection>
-              <SectionTitle>Delivery Address</SectionTitle>
-              <AddressForm>
-                <FormGroup>
-                  <Label htmlFor="street">Street</Label>
-                  <Input
-                    type="text"
-                    id="street"
-                    value={street}
-                    onChange={(e) => setStreet(e.target.value)}
-                    placeholder="Enter street name"
-                    required
-                  />
-                </FormGroup>
-
-                <FormGroup>
-                  <Label htmlFor="house">House</Label>
-                  <Input
-                    type="text"
-                    id="house"
-                    value={house}
-                    onChange={(e) => setHouse(e.target.value)}
-                    placeholder="Enter house number"
-                    required
-                  />
-                </FormGroup>
-              </AddressForm>
-            </AddressSection>
-
+            <ItemsList>
+              {cart.map((item) => (
+                <OrderItem key={item.id}>
+                  <ItemImage src={item.image} alt={item.name} />
+                  <ItemDetails>
+                    <ItemName>{item.name}</ItemName>
+                    <ItemPrice>{formatPrice(item.price)}</ItemPrice>
+                  </ItemDetails>
+                  <ItemControls>
+                    <QuantityInput
+                      type="number"
+                      min="0"
+                      value={item.quantity}
+                      onChange={(e) =>
+                        handleQuantityChange(
+                          item,
+                          parseInt(e.target.value) || 0
+                        )
+                      }
+                    />
+                    <RemoveButton onClick={() => removeFromCart(item.id)}>
+                      <span>x</span>
+                    </RemoveButton>
+                  </ItemControls>
+                </OrderItem>
+              ))}
+            </ItemsList>
+            <TotalSection>
+              <TotalText>Total: {formatPrice(calculateTotal)}</TotalText>
+            </TotalSection>
+            <AddressForm>
+              <FormGroup>
+                <Label htmlFor="street">Street</Label>
+                <Input
+                  type="text"
+                  id="street"
+                  value={street}
+                  onChange={(e) => setStreet(e.target.value)}
+                  placeholder="Enter street name"
+                  required
+                />
+              </FormGroup>
+              <FormGroup>
+                <Label htmlFor="house">House</Label>
+                <Input
+                  type="text"
+                  id="house"
+                  value={house}
+                  onChange={(e) => setHouse(e.target.value)}
+                  placeholder="Enter house number"
+                  required
+                />
+              </FormGroup>
+            </AddressForm>
             <ButtonContainer>
-              <Button onClick={handleSubmitOrder} disabled={isCreating}>
+              <Button
+                onClick={handleSubmitOrder}
+                disabled={isCreating}
+                wide
+                rect
+              >
                 {isCreating ? "Placing Order..." : "Order"}
               </Button>
             </ButtonContainer>
@@ -200,7 +186,6 @@ const OrderPage: React.FC = () => {
   );
 };
 
-// Styled Components
 const PageWrapper = styled.div`
   display: flex;
   flex-direction: column;
@@ -229,11 +214,13 @@ const ContentContainer = styled.div`
   background-color: rgba(255, 255, 255, 0.95);
   backdrop-filter: blur(5px);
   border-radius: 12px;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
   padding: 40px;
   width: 100%;
   max-width: 800px;
   min-height: 600px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 `;
 
 const Title = styled.h1`
@@ -265,23 +252,11 @@ const ErrorMessage = styled.div`
   font-size: 14px;
 `;
 
-const OrderSection = styled.section`
-  margin-bottom: 40px;
-`;
-
-const SectionTitle = styled.h2`
-  color: #333;
-  font-size: 24px;
-  font-weight: 600;
-  margin-bottom: 20px;
-  border-bottom: 2px solid #35b8be;
-  padding-bottom: 8px;
-`;
-
 const ItemsList = styled.div`
   display: flex;
   flex-direction: column;
   gap: 16px;
+  width: 100%;
 `;
 
 const OrderItem = styled.div`
@@ -289,13 +264,11 @@ const OrderItem = styled.div`
   align-items: center;
   background-color: #fff;
   border-radius: 12px;
-  padding: 20px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
-
+  padding: 20px 0; /* убраны боковые паддинги */
+  /* box-shadow убран */
+  transition: transform 0.2s ease;
   &:hover {
     transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
   }
 `;
 
@@ -332,10 +305,13 @@ const ItemControls = styled.div`
   display: flex;
   align-items: center;
   gap: 12px;
+  min-height: 45px;
 `;
 
 const QuantityInput = styled.input`
   width: 60px;
+  height: 45px;
+  flex-shrink: 0;
   padding: 8px;
   border: 2px solid #ddd;
   border-radius: 6px;
@@ -350,16 +326,46 @@ const QuantityInput = styled.input`
 `;
 
 const RemoveButton = styled.button`
-  background: none;
+  width: 60px;
+  height: 45px;
+  flex-shrink: 0;
+  background: #35b8be;
   border: none;
-  font-size: 16px;
+  font-size: 24px;
   cursor: pointer;
-  padding: 8px;
-  border-radius: 4px;
+  padding: 0;
+  border-radius: 6px;
+  color: #fff !important;
+  font-family: Inter, sans-serif;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 27px;
+  letter-spacing: 0.36px;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   transition: background-color 0.2s ease;
+  box-shadow: none;
 
   &:hover {
-    background-color: rgba(231, 60, 23, 0.1);
+    background-color: #269ba1;
+  }
+
+  span {
+    width: 100%;
+    height: 100%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    font-family: Inter, sans-serif;
+    font-size: 24px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 27px;
+    letter-spacing: 0.36px;
+    text-align: center;
   }
 `;
 
@@ -377,39 +383,38 @@ const TotalText = styled.h3`
   color: #35b8be;
 `;
 
-const AddressSection = styled.section`
-  margin-bottom: 40px;
-`;
-
 const AddressForm = styled.form`
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 16px;
+  align-items: center;
+  width: 100%;
+  margin-top: 24px;
 `;
 
 const FormGroup = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 4px;
+  align-items: flex-start;
+  width: 100%;
+  max-width: 400px;
 `;
 
 const Label = styled.label`
-  font-size: 16px;
+  font-size: 15px;
   font-weight: 500;
   color: #333;
+  text-align: left;
 `;
 
 const Input = styled.input`
-  padding: 12px 16px;
+  padding: 8px 10px;
   border: 2px solid #ddd;
   border-radius: 8px;
   font-size: 16px;
   transition: border-color 0.3s ease;
-
-  &:focus {
-    outline: none;
-    border-color: #35b8be;
-  }
+  width: 100%;
 
   &::placeholder {
     color: #999;
@@ -420,6 +425,7 @@ const ButtonContainer = styled.div`
   display: flex;
   justify-content: center;
   margin-top: 30px;
+  width: 100%;
 `;
 
 export default OrderPage;
