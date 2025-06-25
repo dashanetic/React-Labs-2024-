@@ -102,6 +102,8 @@ const cartSlice = createSlice({
       action: PayloadAction<{ item: Meal; quantity?: number }>
     ) => {
       const { item, quantity = 1 } = action.payload;
+      if (!quantity || quantity <= 0) return;
+      if (!item.id) return;
       const existingItemIndex = state.items.findIndex(
         (cartItem) => cartItem.id === item.id
       );
@@ -171,5 +173,7 @@ export const {
   clearCart,
   resetOrderState,
 } = cartSlice.actions;
+
+export { loadCartFromStorage, saveCartToStorage };
 
 export default cartSlice.reducer;

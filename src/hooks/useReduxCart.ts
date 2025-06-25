@@ -32,6 +32,7 @@ export const useCart = () => {
 
   const addToCart = useCallback(
     (item: Meal, quantity: number = 1) => {
+      if (!quantity || quantity <= 0) return;
       console.log("Adding to cart:", { item: item.name, quantity });
       dispatch(addToCartAction({ item, quantity }));
     },
