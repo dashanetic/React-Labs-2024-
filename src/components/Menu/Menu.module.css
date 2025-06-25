@@ -1,0 +1,245 @@
+.menuSection {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 23px;
+  padding: 142px 12px;
+  background-image: url("../../assets/background/menu.svg");
+  background-repeat: no-repeat;
+  background-position: center top;
+  background-size: contain;
+  min-height: 100vh;
+  position: relative;
+  background-color: var(--background-color);
+}
+
+.menuSection::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: inherit;
+  background-size: cover;
+  z-index: -1;
+  transform: scale(3);
+  filter: blur(1px);
+  opacity: 0.8;
+}
+
+body[data-theme="dark"] .menuSection {
+  background-color: #121212;
+  background-image: none;
+}
+
+body[data-theme="dark"] .menuSection::before {
+  background-color: transparent;
+  opacity: 0;
+  mix-blend-mode: normal;
+}
+
+.title {
+  margin: 0;
+  text-align: center;
+  color: var(--primary-color);
+  font-size: 50px;
+  font-family: Inter, sans-serif;
+  font-weight: 400;
+  line-height: 55px;
+  letter-spacing: 1.65px;
+  word-wrap: break-word;
+  animation: fadeInDown 0.8s ease-out;
+  background-color: transparent;
+}
+
+.description {
+  max-width: 800px;
+  width: 80%;
+  text-align: center;
+  color: var(--text-color-secondary);
+  font-size: 16px;
+  font-family: Inter, sans-serif;
+  font-weight: 400;
+  line-height: 27px;
+  letter-spacing: 0.36px;
+  word-wrap: break-word;
+  margin: 10px 0 30px;
+  animation: fadeIn 1s ease-out;
+  background-color: transparent;
+}
+
+.phoneTooltip {
+  position: relative;
+  color: #35b8be;
+  cursor: pointer;
+  text-decoration: none;
+  font-weight: 500;
+  padding: 2px 4px;
+  transition: color 0.3s ease;
+  outline: none;
+}
+
+.phoneTooltip:hover,
+.phoneTooltip:focus {
+  color: #2a9196;
+}
+
+.phoneTooltip:focus-visible {
+  outline: 2px solid #35b8be;
+  outline-offset: 2px;
+  border-radius: 3px;
+}
+
+.tooltipText {
+  visibility: hidden;
+  width: 160px;
+  background-color: #35b8be;
+  color: #fff;
+  text-align: center;
+  border-radius: 4px;
+  padding: 8px;
+  position: absolute;
+  bottom: 125%;
+  left: 50%;
+  transform: translateX(-50%);
+  opacity: 0;
+  transition: opacity 0.3s, transform 0.3s;
+  font-size: 14px;
+  line-height: 1.2;
+  z-index: 1;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  pointer-events: none;
+}
+
+.tooltipText::after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  margin-left: -5px;
+  border-width: 5px;
+  border-style: solid;
+  border-color: #35b8be transparent transparent transparent;
+}
+
+.phoneTooltip:hover .tooltipText,
+.phoneTooltip:focus .tooltipText {
+  visibility: visible;
+  opacity: 1;
+  transform: translateX(-50%) translateY(-5px);
+}
+
+.buttonRow {
+  display: flex;
+  gap: 16px;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin: 20px 0;
+  width: 100%;
+  max-width: 800px;
+}
+
+.buttonRow > * {
+  background-color: var(--background-color);
+  color: var(--text-color);
+  border: 1px solid var(--border-color);
+  transition: background 0.3s, color 0.3s;
+}
+
+.buttonRow > *:hover {
+  background-color: var(--primary-color);
+  color: #fff;
+}
+
+body[data-theme="dark"] .buttonRow > * {
+  background-color: var(--primary-color);
+  color: #fff;
+  border: 1px solid var(--primary-color);
+}
+
+body[data-theme="dark"] .buttonRow > *:hover {
+  background-color: var(--primary-color-dark);
+  color: #fff;
+}
+
+.noItemsMessage {
+  color: var(--text-color-secondary);
+  font-size: 16px;
+  font-family: Inter, sans-serif;
+  font-weight: 400;
+  line-height: 27px;
+  letter-spacing: 0.35px;
+  text-align: center;
+  padding: 20px;
+  background-color: var(--background-color);
+  border-radius: 8px;
+  border: 1px dashed var(--border-color);
+  margin: 30px 0;
+}
+
+body[data-theme="dark"] .noItemsMessage {
+  background-color: #121212;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes fadeInDown {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (max-width: 800px) {
+  .menuSection {
+    padding: 80px 15px;
+  }
+
+  .title {
+    font-size: 36px;
+    letter-spacing: 1px;
+  }
+
+  .description {
+    width: 95%;
+    font-size: 15px;
+    line-height: 24px;
+  }
+
+  .buttonRow {
+    gap: 10px;
+  }
+}
+
+@media (max-width: 480px) {
+  .menuSection {
+    padding: 60px 10px;
+  }
+
+  .title {
+    font-size: 30px;
+  }
+
+  .buttonRow {
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+  }
+
+  .buttonRow > * {
+    width: 100%;
+    max-width: 250px;
+  }
+}
