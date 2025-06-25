@@ -1,0 +1,126 @@
+.card {
+  border-radius: 8px;
+  border: 1px solid var(--border-color);
+  background: var(--background-color);
+  max-width: 578px;
+  padding: 24px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  line-height: 21px;
+  font-weight: 400;
+  font-family: Inter, sans-serif;
+}
+
+.imageContainer {
+  height: 118px;
+  width: 118px;
+  margin-right: 22px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.imageContainer img {
+  object-fit: contain;
+  max-height: 100%;
+  width: auto;
+}
+
+.cardContent {
+  flex-direction: column;
+  display: flex;
+  justify-content: space-between;
+}
+
+.cardHeader {
+  margin-bottom: 17px;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.cardName {
+  letter-spacing: 0.62px;
+  font-size: 17px;
+  color: var(--text-color);
+}
+
+.cardPrice {
+  border-radius: 5px;
+  background: var(--primary-color-light);
+  color: var(--primary-color);
+  min-width: 102px;
+  padding: 5px 9px;
+  text-align: center;
+  font-weight: 600;
+  font-size: 15px;
+}
+
+.cardDescription {
+  letter-spacing: 0.31px;
+  line-height: 23px;
+  color: var(--text-color-secondary);
+  max-width: 348px;
+  margin-bottom: 6px;
+  font-size: 15px;
+  text-align: start;
+}
+
+.truncatedDescription {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.expandedDescription {
+  display: block;
+}
+
+.toggleButton {
+  background: none;
+  border: none;
+  color: #35b8be;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
+  padding: 0;
+  margin-bottom: 8px;
+  text-decoration: underline;
+  align-self: flex-start;
+}
+
+.toggleButton:hover {
+  color: #2a9398;
+}
+
+.cardActions {
+  gap: 10px;
+  display: flex;
+}
+
+.quantityInput {
+  border-radius: 7px;
+  border: 1px solid var(--border-color);
+  background: var(--background-color);
+  width: 62px;
+  color: var(--text-color);
+  font-size: 15px;
+  text-align: center;
+}
+
+.button {
+  height: 45px;
+}
+
+@media (max-width: 800px) {
+  .card {
+    padding: 6px;
+  }
+
+  .button {
+    height: 44px;
+    width: 108px;
+  }
+}

@@ -1,0 +1,33 @@
+.theme-switcher-btn {
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 1.5rem;
+  background: var(--primary-color-light);
+  color: var(--text-color);
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background 0.3s, color 0.3s, box-shadow 0.3s;
+  box-shadow: 0 2px 8px var(--shadow-color);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.theme-switcher-btn:hover {
+  background: var(--primary-color);
+  color: #fff;
+}
+
+.theme-switcher-btn:active {
+  box-shadow: 0 1px 4px var(--shadow-color);
+}
+
+.theme-switcher-icon {
+  font-size: 1.2em;
+  transition: transform 0.4s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+}
+
+body[data-theme="dark"] .theme-switcher-btn {
+  background: #23272b;
+  color: var(--text-color);
+}
